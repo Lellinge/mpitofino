@@ -99,15 +99,15 @@ port-add 63/0 100g none
 port-loopback 63/0 mac-near
 port-enb 63/0
 port-add 65/0 10G none
-port-add 12/0 100G RS
+port-add 9/0 100G RS
+port-add 10/0 100G RS
 port-add 13/0 100G RS
 port-add 14/0 100G RS
-port-add 15/0 100G RS
 port-enb 65/0
-port-enb 12/0
+port-enb 9/0
+port-enb 10/0
 port-enb 13/0
 port-enb 14/0
-port-enb 15/0
 show
 exit
 exit
