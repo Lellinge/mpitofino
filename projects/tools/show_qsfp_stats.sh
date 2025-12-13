@@ -5,6 +5,8 @@ ucli
 bf_pltfm
 qsfp
 show
+..
+..
 exit
 exit
 EOF
