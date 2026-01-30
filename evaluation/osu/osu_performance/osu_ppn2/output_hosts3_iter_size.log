@@ -1,0 +1,64 @@
+[1,0]<stdout>:[1769778889.372147] [wolpy12:779720:0]     ucp_context.c:1951 UCX  WARN  UCP API version is incompatible: required >= 1.16, actual 1.14.0 (loaded from /lib64/libucp.so.0)
+[1,1]<stdout>:[1769778889.373825] [wolpy12:779721:0]     ucp_context.c:1951 UCX  WARN  UCP API version is incompatible: required >= 1.16, actual 1.14.0 (loaded from /lib64/libucp.so.0)
+[1,5]<stdout>:[1769778889.381625] [wolpy14:47253:0]     ucp_context.c:1951 UCX  WARN  UCP API version is incompatible: required >= 1.16, actual 1.14.0 (loaded from /lib64/libucp.so.0)
+[1,4]<stdout>:[1769778889.382109] [wolpy14:47252:0]     ucp_context.c:1951 UCX  WARN  UCP API version is incompatible: required >= 1.16, actual 1.14.0 (loaded from /lib64/libucp.so.0)
+[1,3]<stdout>:[1769778889.410350] [wolpy13:56229:0]     ucp_context.c:1951 UCX  WARN  UCP API version is incompatible: required >= 1.16, actual 1.14.0 (loaded from /lib64/libucp.so.0)
+[1,2]<stdout>:[1769778889.410519] [wolpy13:56228:0]     ucp_context.c:1951 UCX  WARN  UCP API version is incompatible: required >= 1.16, actual 1.14.0 (loaded from /lib64/libucp.so.0)
+[1,0]<stdout>:[1769778889.533740] [wolpy12:779720:0]     ucp_context.c:1951 UCX  WARN  UCP API version is incompatible: required >= 1.16, actual 1.14.0 (loaded from /lib64/libucp.so.0)
+[1,1]<stdout>:[1769778889.533669] [wolpy12:779721:0]     ucp_context.c:1951 UCX  WARN  UCP API version is incompatible: required >= 1.16, actual 1.14.0 (loaded from /lib64/libucp.so.0)
+[1,4]<stdout>:[1769778889.534111] [wolpy14:47252:0]     ucp_context.c:1951 UCX  WARN  UCP API version is incompatible: required >= 1.16, actual 1.14.0 (loaded from /lib64/libucp.so.0)
+[1,3]<stdout>:[1769778889.534037] [wolpy13:56229:0]     ucp_context.c:1951 UCX  WARN  UCP API version is incompatible: required >= 1.16, actual 1.14.0 (loaded from /lib64/libucp.so.0)
+[1,5]<stdout>:[1769778889.534099] [wolpy14:47253:0]     ucp_context.c:1951 UCX  WARN  UCP API version is incompatible: required >= 1.16, actual 1.14.0 (loaded from /lib64/libucp.so.0)
+[1,2]<stdout>:[1769778889.533955] [wolpy13:56228:0]     ucp_context.c:1951 UCX  WARN  UCP API version is incompatible: required >= 1.16, actual 1.14.0 (loaded from /lib64/libucp.so.0)
+[1,0]<stdout>:Available IB devices:
+[1,0]<stdout>:  0: mlx5_0 (guid: 1070:fd03:002e:7338) <-- chosen
+[1,0]<stdout>:
+[1,5]<stdout>:Available IB devices:
+[1,5]<stdout>:  0: mlx5_0 (guid: 1070:fd03:0039:b182) <-- chosen
+[1,5]<stdout>:
+[1,2]<stdout>:Available IB devices:
+[1,2]<stdout>:  0: mlx5_0 (guid: 1070:fd03:002e:7450) <-- chosen
+[1,2]<stdout>:
+[1,4]<stdout>:Available IB devices:
+[1,4]<stdout>:  0: mlx5_0 (guid: 1070:fd03:0039:b182) <-- chosen
+[1,4]<stdout>:
+[1,3]<stdout>:Available IB devices:
+[1,3]<stdout>:  0: mlx5_0 (guid: 1070:fd03:002e:7450) <-- chosen
+[1,3]<stdout>:
+[1,1]<stdout>:Available IB devices:
+[1,1]<stdout>:  0: mlx5_0 (guid: 1070:fd03:002e:7338) <-- chosen
+[1,1]<stdout>:
+[1,0]<stdout>:  chosen gid: 3
+[1,0]<stdout>:
+[1,2]<stdout>:  chosen gid: 3
+[1,2]<stdout>:
+[1,0]<stdout>:
+[1,0]<stdout>:# OSU MPI Allreduce Latency Test v5.3
+[1,0]<stdout>:# Size       Avg Latency(us)
+[1,1]<stdout>:  chosen gid: 3
+[1,1]<stdout>:
+[1,3]<stdout>:  chosen gid: 3
+[1,3]<stdout>:
+[1,4]<stdout>:  chosen gid: 3
+[1,4]<stdout>:
+[1,5]<stdout>:  chosen gid: 3
+[1,5]<stdout>:
+[1,0]<stdout>:4                       9.40
+[1,0]<stdout>:8                       9.39
+[1,0]<stdout>:16                      9.41
+[1,0]<stdout>:32                      9.26
+[1,0]<stdout>:64                      9.25
+[1,0]<stdout>:128                     9.29
+[1,0]<stdout>:256                     9.27
+[1,0]<stdout>:512                     9.27
+[1,0]<stdout>:1024                    9.34
+[1,0]<stdout>:2048                    9.36
+[1,0]<stdout>:4096                    9.58
+[1,0]<stdout>:8192                    9.91
+[1,0]<stdout>:16384                  10.53
+[1,0]<stdout>:32768                  14.25
+[1,0]<stdout>:65536                  21.46
+[1,0]<stdout>:131072                 35.57
+[1,0]<stdout>:262144                 63.60
+[1,0]<stdout>:524288                119.68
+[1,0]<stdout>:1048576               231.87

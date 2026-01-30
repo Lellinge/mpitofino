@@ -1,0 +1,43 @@
+[1,0]<stdout>:[1769778830.672140] [wolpy12:779636:0]     ucp_context.c:1951 UCX  WARN  UCP API version is incompatible: required >= 1.16, actual 1.14.0 (loaded from /lib64/libucp.so.0)
+[1,1]<stdout>:[1769778830.694663] [wolpy13:56183:0]     ucp_context.c:1951 UCX  WARN  UCP API version is incompatible: required >= 1.16, actual 1.14.0 (loaded from /lib64/libucp.so.0)
+[1,2]<stdout>:[1769778830.715764] [wolpy14:47218:0]     ucp_context.c:1951 UCX  WARN  UCP API version is incompatible: required >= 1.16, actual 1.14.0 (loaded from /lib64/libucp.so.0)
+[1,0]<stdout>:[1769778830.832752] [wolpy12:779636:0]     ucp_context.c:1951 UCX  WARN  UCP API version is incompatible: required >= 1.16, actual 1.14.0 (loaded from /lib64/libucp.so.0)
+[1,2]<stdout>:[1769778830.833262] [wolpy14:47218:0]     ucp_context.c:1951 UCX  WARN  UCP API version is incompatible: required >= 1.16, actual 1.14.0 (loaded from /lib64/libucp.so.0)
+[1,1]<stdout>:[1769778830.833396] [wolpy13:56183:0]     ucp_context.c:1951 UCX  WARN  UCP API version is incompatible: required >= 1.16, actual 1.14.0 (loaded from /lib64/libucp.so.0)
+[1,0]<stdout>:Available IB devices:
+[1,0]<stdout>:  0: mlx5_0 (guid: 1070:fd03:002e:7338) <-- chosen
+[1,0]<stdout>:
+[1,1]<stdout>:Available IB devices:
+[1,1]<stdout>:  0: mlx5_0 (guid: 1070:fd03:002e:7450) <-- chosen
+[1,1]<stdout>:
+[1,2]<stdout>:Available IB devices:
+[1,2]<stdout>:  0: mlx5_0 (guid: 1070:fd03:0039:b182) <-- chosen
+[1,2]<stdout>:
+[1,0]<stdout>:  chosen gid: 3
+[1,0]<stdout>:
+[1,1]<stdout>:  chosen gid: 3
+[1,1]<stdout>:
+[1,2]<stdout>:  chosen gid: 3
+[1,2]<stdout>:
+[1,0]<stdout>:
+[1,0]<stdout>:# OSU MPI Allreduce Latency Test v5.3
+[1,0]<stdout>:# Size       Avg Latency(us)
+[1,0]<stdout>:4                       7.33
+[1,0]<stdout>:8                       7.32
+[1,0]<stdout>:16                      7.31
+[1,0]<stdout>:32                      7.28
+[1,0]<stdout>:64                      7.25
+[1,0]<stdout>:128                     7.19
+[1,0]<stdout>:256                     7.21
+[1,0]<stdout>:512                     7.25
+[1,0]<stdout>:1024                    7.35
+[1,0]<stdout>:2048                    7.44
+[1,0]<stdout>:4096                    7.62
+[1,0]<stdout>:8192                    7.89
+[1,0]<stdout>:16384                   8.58
+[1,0]<stdout>:32768                  10.36
+[1,0]<stdout>:65536                  13.88
+[1,0]<stdout>:131072                 23.12
+[1,0]<stdout>:262144                 39.53
+[1,0]<stdout>:524288                 72.75
+[1,0]<stdout>:1048576               139.93
