@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+     <title>CEA-HPC - HP2P on wolpy12 - 28/1/2026 at 2:28:35</title>
+  </head>
+  <style>
+
+    body {
+        margin:0;
+    }
+
+    .banner {
+      overflow: hidden;
+      background-color: #114073;
+      margin: 0;
+      height: 75px;
+      margin-left: 0px;
+      margin-right: 0px;
+      width: 100%;
+    }
+    .banner > h2 {
+      float: left;
+      color: white;
+      padding: 2px;
+      font-size: 25px;
+      margin-left: 8%;
+      font-family: 'Open Sans', sans-serif;
+    }
+
+    .stats-container {
+      padding: 0;
+      margin: 0;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: baseline;
+      justify-content: center;
+    }
+     .stats-container > div {
+      margin: 4px;
+      padding: 2px;
+      background-color: white;
+      width: 800px;
+      text-align: center;
+      line-height: 20px;
+      font-size: 15px;
+      font-family: 'Open Sans', sans-serif;
+    }
+    .flex-container {
+      padding: 0;
+      margin: 0;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: baseline;
+      justify-content: center;
+    }
+    .flex-container > div {
+      margin: 2px;
+      padding: 2px;
+    }
+</style>
+<script type="text/javascript">window.PlotlyConfig = {MathJaxConfig: 'local'};</script>
+<script src="https://cdn.plot.ly/plotly-2.24.1.min.js"></script>
+<body style="background-color:rgb(220, 220, 220);">
+<div class="banner">
+<h2>HP2P results vizualisation</h2>
+</div>
+<div class=stats-container>
+<div>
+<h2>Details</h2>
+Number of iterations: 100 / 100<br>
+Message size: 2097152 bytes<br>
+Number of messages per communication: 10<br>
+MPI buffer alignment: 8<br>
+Algorithm: random<br>
+</div>
+</div>
+<div class=stats-container >
+<div>
+<h2>Bandwidth Statistics</h2>
+Minimum Bandwidth: 8455.67 MB/s between wolpy13 and wolpy14<br>
+Maximum Bandwidth: 8477.32 MB/s between wolpy14 and wolpy12<br>
+Average: 8465.02 MB/s<br>
+Standard deviation: 8.89 MB/s<br>
+</div>
+<div>
+<h2>Latency Statistics</h2>
+Minimum Latency: 235.92 <span>&#181;</span>s between wolpy14 and wolpy12<br>
+Maximum Latency: 236.53 <span>&#181;</span>s between wolpy13 and wolpy14<br>
+Average: 236.27 <span>&#181;</span>s<br>
+Standard deviation: 0.25 <span>&#181;</span>s<br>
+</div>
+<div>
+<h2>Bisection bandwidth Statistics</h2>
+Minimum Bisection Bandwidth: 0.00 MB/s<br>
+Maximum Bisection Bandwidth: 0.00 MB/s<br>
+Average: 0.00 MB/s<br>
+Standard deviation: 0.00 MB/s<br>
+</div>
+</div>
+<script type="text/javascript">
+// msg_size start
+var msg_size = 
+    2097152
+    ;
+// msg_size end
+// bisection bandwidth start
+var bisection_bandwidth = 
+[ 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00,    ]
+;
+// bisection bandwidth end
+// build couples start
+var monitor_build_couples = 
+[ 3.809e-06, 1.872e-06, 1.501e-06, 1.304e-06, 1.215e-06, 1.385e-06, 4.170e-07, 4.060e-07, 1.100e-06, 1.039e-06, 4.630e-07, 1.132e-06, 3.670e-07, 1.199e-06, 3.420e-07, 1.150e-06, 3.400e-07, 1.123e-06, 4.060e-07, 1.098e-06, 1.768e-06, 4.300e-07, 1.947e-06, 4.640e-07, 1.814e-06, 3.820e-07, 1.773e-06, 1.852e-06, 1.381e-06, 1.332e-06, 4.450e-07, 3.900e-07, 1.492e-06, 1.184e-06, 1.271e-06, 1.135e-06, 1.165e-06, 1.756e-06, 1.761e-06, 1.949e-06, 1.380e-06, 3.910e-07, 1.384e-06, 1.891e-06, 1.337e-06, 4.310e-07, 1.248e-06, 1.245e-06, 1.204e-06, 1.361e-06, 1.169e-06, 1.175e-06, 3.860e-07, 3.370e-07, 1.228e-06, 3.370e-07, 1.238e-06, 1.133e-06, 3.570e-07, 1.181e-06, 1.159e-06, 1.229e-06, 1.196e-06, 1.168e-06, 1.173e-06, 1.189e-06, 1.138e-06, 3.620e-07, 1.192e-06, 1.642e-06, 1.127e-06, 1.335e-06, 1.171e-06, 1.085e-06, 1.170e-06, 1.228e-06, 1.169e-06, 1.206e-06, 3.240e-07, 1.221e-06, 1.246e-06, 1.207e-06, 1.178e-06, 1.330e-06, 1.190e-06, 3.420e-07, 3.300e-07, 1.221e-06, 3.420e-07, 1.841e-06, 1.354e-06, 1.331e-06, 1.244e-06, 1.221e-06, 3.790e-07, 4.100e-07, 1.276e-06, 1.212e-06, 1.156e-06, 3.760e-07,    ]
+;
+// build couples end
+// heavyp2p start
+var monitor_heavyp2p = 
+[ 4.264e-03, 4.596e-03, 4.311e-03, 4.283e-03, 4.233e-03, 9.890e-03, 4.987e-03, 4.147e-03, 4.133e-03, 4.558e-03, 4.333e-03, 4.067e-03, 4.223e-03, 4.045e-03, 4.127e-03, 4.150e-03, 4.132e-03, 4.062e-03, 4.121e-03, 4.663e-03, 4.073e-03, 4.596e-03, 4.063e-03, 4.470e-03, 4.060e-03, 4.680e-03, 4.474e-03, 4.143e-03, 4.198e-03, 4.051e-03, 4.120e-03, 4.145e-03, 4.156e-03, 4.138e-03, 4.180e-03, 4.126e-03, 4.252e-03, 4.701e-03, 4.455e-03, 3.997e-03, 4.087e-03, 4.192e-03, 4.362e-03, 4.179e-03, 4.089e-03, 4.131e-03, 4.142e-03, 4.127e-03, 4.137e-03, 4.156e-03, 4.172e-03, 4.040e-03, 4.111e-03, 4.183e-03, 4.054e-03, 4.210e-03, 4.171e-03, 4.071e-03, 4.194e-03, 4.171e-03, 4.192e-03, 4.129e-03, 4.173e-03, 4.140e-03, 4.126e-03, 4.158e-03, 4.069e-03, 4.224e-03, 4.145e-03, 4.188e-03, 4.138e-03, 4.179e-03, 4.142e-03, 4.113e-03, 4.146e-03, 4.127e-03, 4.147e-03, 4.067e-03, 4.121e-03, 4.146e-03, 4.117e-03, 4.257e-03, 4.158e-03, 4.112e-03, 4.193e-03, 4.146e-03, 4.193e-03, 4.056e-03, 4.358e-03, 4.201e-03, 4.199e-03, 4.152e-03, 4.142e-03, 4.137e-03, 4.112e-03, 4.137e-03, 4.195e-03, 4.209e-03, 4.059e-03, 4.198e-03,    ]
+;
+// heavyp2p end
+// snapshot start
+var monitor_snapshot = 
+[ 3.500e-08, 3.400e-08, 3.500e-08, 3.300e-08, 3.400e-08, 2.500e-08, 2.400e-08, 3.500e-08, 3.300e-08, 2.500e-08, 3.300e-08, 2.500e-08, 3.300e-08, 2.400e-08, 3.200e-08, 2.400e-08, 3.500e-08, 2.400e-08, 3.300e-08, 3.000e-08, 2.500e-08, 4.300e-08, 2.500e-08, 3.400e-08, 2.500e-08, 3.600e-08, 3.000e-08, 3.500e-08, 3.500e-08, 2.500e-08, 2.300e-08, 3.400e-08, 3.400e-08, 3.300e-08, 3.300e-08, 3.300e-08, 4.200e-08, 4.400e-08, 2.500e-08, 3.600e-08, 2.400e-08, 3.200e-08, 4.100e-08, 3.200e-08, 2.400e-08, 3.200e-08, 3.500e-08, 3.400e-08, 3.400e-08, 3.300e-08, 3.400e-08, 2.400e-08, 2.500e-08, 3.300e-08, 2.500e-08, 3.500e-08, 3.300e-08, 2.400e-08, 3.400e-08, 3.200e-08, 3.400e-08, 3.400e-08, 3.200e-08, 3.400e-08, 3.400e-08, 3.400e-08, 2.400e-08, 3.400e-08, 3.400e-08, 3.300e-08, 3.400e-08, 3.400e-08, 3.300e-08, 3.300e-08, 3.400e-08, 3.200e-08, 3.300e-08, 2.300e-08, 3.600e-08, 3.400e-08, 3.400e-08, 3.200e-08, 3.300e-08, 3.500e-08, 2.500e-08, 2.400e-08, 3.400e-08, 2.400e-08, 2.500e-08, 3.400e-08, 3.300e-08, 3.400e-08, 3.300e-08, 2.400e-08, 2.400e-08, 3.300e-08, 3.300e-08, 3.400e-08, 2.400e-08, 3.400e-08,    ]
+;
+// snapshot end
+</script>
+
+<div class=flex-container >
+<div><div id="4" style="height: 800px; width: 80%;" class="plotly-graph-div"></div>
+  <script type="text/javascript">
+    window.PLOTLYENV=window.PLOTLYENV || {};
+    window.PLOTLYENV.BASE_URL="https://plot.ly";
+    Plotly.newPlot("4", [ 
+      {"uid": "4",
+       "name": "Comm",
+       "mode": "lines",
+       "marker": { "color": "green" },
+       "y": monitor_heavyp2p,
+       "type": "scatter"},      {"uid": "5",
+       "name": "Draw",
+       "mode": "lines",
+       "marker": { "color": "blue" },
+       "y": monitor_build_couples,
+       "type": "scatter"},      {"uid": "6",
+       "name": "Snapshot",
+       "mode": "lines",
+       "marker": { "color": "orange" },
+       "y": monitor_snapshot,
+       "type": "scatter"},
+    ],
+    {"height": 800, "width": 1600, "autosize": true, "title": {"text": "Time of iterations"}, "yaxis": {"title": "Time (s)"}, "xaxis": {"title": "Iteration"} }, {"plotlyServerURL": "https://plot.ly", "linkText": "Export to plot.ly", "showLink": false}
+    )
+  </script>
+</div>
+
+<div class=flex-container >
+<div><div id="5" style="height: 800px; width: 80%;" class="plotly-graph-div"></div>
+  <script type="text/javascript">
+    window.PLOTLYENV=window.PLOTLYENV || {};
+    window.PLOTLYENV.BASE_URL="https://plot.ly";
+    Plotly.newPlot("5",
+    [{"uid": "7",
+    "name": "",
+    "mode": "markers",
+    "marker": { "color": "red" },
+    "y": bisection_bandwidth,
+    "type": "scatter"}],
+    {"height": 800, "width": 800, "autosize": true, "title": {"text": "Bisection bandwidth (MB/s)"}, "yaxis": {"title": "Bandwidth (MB/s)"}, "xaxis": {"title": "Iteration"} }, {"plotlyServerURL": "https://plot.ly", "linkText": "Export to plot.ly", "showLink": false}
+    )
+  </script>
+</div>
+
+<div class=flex-container >
+<div><div id="6" style="height: 800px; width: 80%;" class="plotly-graph-div"></div>
+  <script type="text/javascript">
+    window.PLOTLYENV=window.PLOTLYENV || {};
+    window.PLOTLYENV.BASE_URL="https://plot.ly";
+    Plotly.newPlot("6",
+    [{"uid": "8",
+    "name": "",
+    "boxmean": "sd",
+    "y": bisection_bandwidth,
+    "type": "box"}],
+    {"height": 800, "width": 800, "autosize": true, "title": {"text": "Bisection bandwidth (MB/s)"}, "yaxis": {"title": "Bandwidth (MB/s)"} }, {"plotlyServerURL": "https://plot.ly", "linkText": "Export to plot.ly", "showLink": false}
+    )
+  </script>
+</div>
+
+</div>
+<div class=stats-container>
+<div>
+This page was generated by CEA-HPC <a href="https://github.com/cea-hpc/hp2p">HP2P</a> benchmark on 28/1/2026 at 2:28:35.
+</div>
+</div>
+</body>
+</html>
+

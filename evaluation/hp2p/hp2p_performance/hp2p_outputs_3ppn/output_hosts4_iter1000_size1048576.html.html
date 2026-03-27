@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+     <title>CEA-HPC - HP2P on wolpy12 - 28/1/2026 at 2:49:18</title>
+  </head>
+  <style>
+
+    body {
+        margin:0;
+    }
+
+    .banner {
+      overflow: hidden;
+      background-color: #114073;
+      margin: 0;
+      height: 75px;
+      margin-left: 0px;
+      margin-right: 0px;
+      width: 100%;
+    }
+    .banner > h2 {
+      float: left;
+      color: white;
+      padding: 2px;
+      font-size: 25px;
+      margin-left: 8%;
+      font-family: 'Open Sans', sans-serif;
+    }
+
+    .stats-container {
+      padding: 0;
+      margin: 0;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: baseline;
+      justify-content: center;
+    }
+     .stats-container > div {
+      margin: 4px;
+      padding: 2px;
+      background-color: white;
+      width: 800px;
+      text-align: center;
+      line-height: 20px;
+      font-size: 15px;
+      font-family: 'Open Sans', sans-serif;
+    }
+    .flex-container {
+      padding: 0;
+      margin: 0;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: baseline;
+      justify-content: center;
+    }
+    .flex-container > div {
+      margin: 2px;
+      padding: 2px;
+    }
+</style>
+<script type="text/javascript">window.PlotlyConfig = {MathJaxConfig: 'local'};</script>
+<script src="https://cdn.plot.ly/plotly-2.24.1.min.js"></script>
+<body style="background-color:rgb(220, 220, 220);">
+<div class="banner">
+<h2>HP2P results vizualisation</h2>
+</div>
+<div class=stats-container>
+<div>
+<h2>Details</h2>
+Number of iterations: 1000 / 1000<br>
+Message size: 1048576 bytes<br>
+Number of messages per communication: 10<br>
+MPI buffer alignment: 8<br>
+Algorithm: random<br>
+</div>
+</div>
+<div class=stats-container >
+<div>
+<h2>Bandwidth Statistics</h2>
+Minimum Bandwidth: 2612.46 MB/s between wolpy12 and wolpy13<br>
+Maximum Bandwidth: 14830.81 MB/s between wolpy14 and wolpy14<br>
+Average: 5386.76 MB/s<br>
+Standard deviation: 3938.78 MB/s<br>
+</div>
+<div>
+<h2>Latency Statistics</h2>
+Minimum Latency: 67.43 <span>&#181;</span>s between wolpy14 and wolpy14<br>
+Maximum Latency: 382.78 <span>&#181;</span>s between wolpy12 and wolpy13<br>
+Average: 245.70 <span>&#181;</span>s<br>
+Standard deviation: 83.51 <span>&#181;</span>s<br>
+</div>
+<div>
+<h2>Bisection bandwidth Statistics</h2>
+Minimum Bisection Bandwidth: 0.00 MB/s<br>
+Maximum Bisection Bandwidth: 0.00 MB/s<br>
+Average: 0.00 MB/s<br>
+Standard deviation: 0.00 MB/s<br>
+</div>
+</div>
+<script type="text/javascript">
+// hostlist start
+var hostlist = 
+[    "wolpy12",     "wolpy12",     "wolpy12",     "wolpy13",     "wolpy13",     "wolpy13",     "wolpy14",     "wolpy14",     "wolpy14",     "wolpy15",     "wolpy15",     "wolpy15",     ]
+;
+// hostlist end
+// msg_size start
+var msg_size = 
+    1048576
+    ;
+// msg_size end
+// bandwidth start
+var bandwidth = 
+[    [ 0.00, 13129.12, 13827.81, 3553.53, 3611.57, 3019.31, 3577.50, 3647.93, 3535.88, 3615.03, 3613.29, 3580.19, ],     [ 13137.82, 0.00, 13900.00, 2612.46, 3580.31, 3555.36, 3627.80, 3537.82, 3564.29, 3558.40, 3572.06, 3513.00, ],     [ 13835.17, 13899.12, 0.00, 3587.00, 3563.41, 3602.55, 3607.73, 3532.22, 3560.75, 3619.27, 3506.92, 3586.68, ],     [ 3559.00, 2617.14, 3591.64, 0.00, 13238.23, 13898.35, 3607.25, 3561.67, 3598.35, 3641.87, 3622.25, 3589.72, ],     [ 3616.73, 3582.43, 3567.59, 13235.10, 0.00, 13950.51, 3681.01, 2651.87, 3595.00, 3595.40, 3570.37, 3573.68, ],     [ 3022.59, 3560.79, 3606.42, 13902.23, 13957.40, 0.00, 3596.15, 3576.69, 3592.83, 3627.92, 3321.12, 3549.50, ],     [ 3578.92, 3629.43, 3609.92, 3605.54, 3678.88, 3592.23, 0.00, 13384.30, 13871.03, 3590.61, 3565.59, 3565.60, ],     [ 3653.88, 3544.70, 3540.71, 3563.68, 2653.46, 3580.24, 13433.27, 0.00, 14830.81, 3586.96, 3590.80, 3555.90, ],     [ 3540.69, 3567.08, 3565.56, 3597.96, 3596.69, 3591.99, 13869.17, 14777.90, 0.00, 3582.50, 3595.56, 3555.89, ],     [ 3616.48, 3561.54, 3619.26, 3640.44, 3593.70, 3627.20, 3589.78, 3582.81, 3583.40, 0.00, 13106.02, 13731.31, ],     [ 3617.96, 3575.49, 3509.37, 3620.34, 3571.89, 3322.09, 3563.44, 3586.72, 3595.11, 13110.58, 0.00, 13759.89, ],     [ 3587.36, 3519.31, 3594.54, 3591.50, 3579.44, 3548.28, 3568.10, 3555.33, 3559.64, 13785.22, 13800.78, 0.00, ],     ]
+;
+// bandwidth end
+      var bw_avg = [];
+      for (const bw_line of bandwidth) {
+	var sum = bw_line.reduce((a, b) => a + b, 0);
+	bw_avg.push(sum/(bw_line.length-1));}
+</script>
+<div class=flex-container >
+<div><div id="1" style="height: 800px; width: 80%;" class="plotly-graph-div"></div>
+  <script type="text/javascript">
+    window.PLOTLYENV=window.PLOTLYENV || {};
+    window.PLOTLYENV.BASE_URL="https://plot.ly";
+    Plotly.newPlot("1",
+    [{"uid": "1",
+    "colorscale": "Jet",
+    "y": hostlist,
+    "x": hostlist,
+    "z": bandwidth,
+    "type": "heatmap"}],
+    {"height": 800, "width": 800, "autosize": true, "title": {"text": "Bandwidth (MB/s)"}, "yaxis": {"autorange": "reversed"}}, {"plotlyServerURL": "https://plot.ly", "linkText": "Export to plot.ly", "showLink": false}
+    )
+
+  </script>
+
+</div>
+<div class=flex-container >
+<div><div id="2" style="height: 800px; width: 80%;" class="plotly-graph-div"></div>
+  <script type="text/javascript">
+    window.PLOTLYENV=window.PLOTLYENV || {};
+    window.PLOTLYENV.BASE_URL="https://plot.ly";
+    Plotly.newPlot("2",
+    [{"uid": "2",
+    "colorscale": "Jet",
+    "x": [].concat(...bandwidth).filter(function(number){return number > 0.0;}),
+    "type": "histogram"}],
+    {"height": 800, "width": 800, "autosize": true, "title": {"text": "Distribution Bandwidth (MB/s)"}, "yaxis": {"title": "Number of pairs"}, "xaxis": {"title": "Bandwidth (MB/s)"}}, {"plotlyServerURL": "https://plot.ly", "linkText": "Export to plot.ly", "showLink": false}
+    )
+  </script>
+</div>
+
+<div class=flex-container >
+<div><div id="3" style="height: 800px; width: 80%;" class="plotly-graph-div"></div>
+  <script type="text/javascript">
+    window.PLOTLYENV=window.PLOTLYENV || {};
+    window.PLOTLYENV.BASE_URL="https://plot.ly";
+    Plotly.newPlot("3",
+    [{"uid": "3",
+    "colorscale": "Jet",
+    "x": bw_avg,
+    "type": "histogram"}],
+    {"height": 800, "width": 800, "autosize": true, "title": {"text": "Distribution of average bandwidth per node (MB/s)"}, "yaxis": {"title": "Number of nodes"}, "xaxis": {"title": "Bandwidth (MB/s)"} }, {"plotlyServerURL": "https://plot.ly", "linkText": "Export to plot.ly", "showLink": false}
+    )
+  </script>
+</div>
+
+</div>
+</div>
+<div class=stats-container>
+<div>
+This page was generated by CEA-HPC <a href="https://github.com/cea-hpc/hp2p">HP2P</a> benchmark on 28/1/2026 at 2:49:18.
+</div>
+</div>
+</body>
+</html>
+

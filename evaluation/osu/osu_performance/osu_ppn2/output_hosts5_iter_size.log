@@ -1,0 +1,92 @@
+[1,0]<stdout>:[1769778891.732086] [wolpy12:779757:0]     ucp_context.c:1951 UCX  WARN  UCP API version is incompatible: required >= 1.16, actual 1.14.0 (loaded from /lib64/libucp.so.0)
+[1,1]<stdout>:[1769778891.733690] [wolpy12:779758:0]     ucp_context.c:1951 UCX  WARN  UCP API version is incompatible: required >= 1.16, actual 1.14.0 (loaded from /lib64/libucp.so.0)
+[1,5]<stdout>:[1769778891.739121] [wolpy14:47281:0]     ucp_context.c:1951 UCX  WARN  UCP API version is incompatible: required >= 1.16, actual 1.14.0 (loaded from /lib64/libucp.so.0)
+[1,4]<stdout>:[1769778891.739675] [wolpy14:47280:0]     ucp_context.c:1951 UCX  WARN  UCP API version is incompatible: required >= 1.16, actual 1.14.0 (loaded from /lib64/libucp.so.0)
+[1,8]<stdout>:[1769778891.749324] [wolpy16:42494:0]     ucp_context.c:1951 UCX  WARN  UCP API version is incompatible: required >= 1.16, actual 1.14.0 (loaded from /lib64/libucp.so.0)
+[1,9]<stdout>:[1769778891.749308] [wolpy16:42495:0]     ucp_context.c:1951 UCX  WARN  UCP API version is incompatible: required >= 1.16, actual 1.14.0 (loaded from /lib64/libucp.so.0)
+[1,2]<stdout>:[1769778891.753653] [wolpy13:56257:0]     ucp_context.c:1951 UCX  WARN  UCP API version is incompatible: required >= 1.16, actual 1.14.0 (loaded from /lib64/libucp.so.0)
+[1,3]<stdout>:[1769778891.754003] [wolpy13:56258:0]     ucp_context.c:1951 UCX  WARN  UCP API version is incompatible: required >= 1.16, actual 1.14.0 (loaded from /lib64/libucp.so.0)
+[1,6]<stdout>:[1769778891.765349] [wolpy15:20051:0]     ucp_context.c:1951 UCX  WARN  UCP API version is incompatible: required >= 1.16, actual 1.14.0 (loaded from /lib64/libucp.so.0)
+[1,7]<stdout>:[1769778891.765148] [wolpy15:20052:0]     ucp_context.c:1951 UCX  WARN  UCP API version is incompatible: required >= 1.16, actual 1.14.0 (loaded from /lib64/libucp.so.0)
+[1,1]<stdout>:[1769778891.892208] [wolpy12:779758:0]     ucp_context.c:1951 UCX  WARN  UCP API version is incompatible: required >= 1.16, actual 1.14.0 (loaded from /lib64/libucp.so.0)
+[1,0]<stdout>:[1769778891.892147] [wolpy12:779757:0]     ucp_context.c:1951 UCX  WARN  UCP API version is incompatible: required >= 1.16, actual 1.14.0 (loaded from /lib64/libucp.so.0)
+[1,2]<stdout>:[1769778891.892637] [wolpy13:56257:0]     ucp_context.c:1951 UCX  WARN  UCP API version is incompatible: required >= 1.16, actual 1.14.0 (loaded from /lib64/libucp.so.0)
+[1,6]<stdout>:[1769778891.892570] [wolpy15:20051:0]     ucp_context.c:1951 UCX  WARN  UCP API version is incompatible: required >= 1.16, actual 1.14.0 (loaded from /lib64/libucp.so.0)
+[1,9]<stdout>:[1769778891.892654] [wolpy16:42495:0]     ucp_context.c:1951 UCX  WARN  UCP API version is incompatible: required >= 1.16, actual 1.14.0 (loaded from /lib64/libucp.so.0)
+[1,7]<stdout>:[1769778891.892561] [wolpy15:20052:0]     ucp_context.c:1951 UCX  WARN  UCP API version is incompatible: required >= 1.16, actual 1.14.0 (loaded from /lib64/libucp.so.0)
+[1,8]<stdout>:[1769778891.892705] [wolpy16:42494:0]     ucp_context.c:1951 UCX  WARN  UCP API version is incompatible: required >= 1.16, actual 1.14.0 (loaded from /lib64/libucp.so.0)
+[1,3]<stdout>:[1769778891.892637] [wolpy13:56258:0]     ucp_context.c:1951 UCX  WARN  UCP API version is incompatible: required >= 1.16, actual 1.14.0 (loaded from /lib64/libucp.so.0)
+[1,5]<stdout>:[1769778891.892806] [wolpy14:47281:0]     ucp_context.c:1951 UCX  WARN  UCP API version is incompatible: required >= 1.16, actual 1.14.0 (loaded from /lib64/libucp.so.0)
+[1,4]<stdout>:[1769778891.892777] [wolpy14:47280:0]     ucp_context.c:1951 UCX  WARN  UCP API version is incompatible: required >= 1.16, actual 1.14.0 (loaded from /lib64/libucp.so.0)
+[1,0]<stdout>:Available IB devices:
+[1,0]<stdout>:  0: mlx5_0 (guid: 1070:fd03:002e:7338) <-- chosen
+[1,0]<stdout>:
+[1,1]<stdout>:Available IB devices:
+[1,1]<stdout>:  0: mlx5_0 (guid: 1070:fd03:002e:7338) <-- chosen
+[1,1]<stdout>:
+[1,6]<stdout>:Available IB devices:
+[1,6]<stdout>:  0: mlx5_0 (guid: 1070:fd03:0039:b132) <-- chosen
+[1,6]<stdout>:
+[1,5]<stdout>:Available IB devices:
+[1,5]<stdout>:  0: mlx5_0 (guid: 1070:fd03:0039:b182) <-- chosen
+[1,5]<stdout>:
+[1,7]<stdout>:Available IB devices:
+[1,7]<stdout>:  0: mlx5_0 (guid: 1070:fd03:0039:b132) <-- chosen
+[1,7]<stdout>:
+[1,9]<stdout>:Available IB devices:
+[1,9]<stdout>:  0: mlx5_0 (guid: 1070:fd03:002e:7340) <-- chosen
+[1,9]<stdout>:
+[1,2]<stdout>:Available IB devices:
+[1,4]<stdout>:Available IB devices:
+[1,4]<stdout>:  0: mlx5_0 (guid: 1070:fd03:0039:b182) <-- chosen
+[1,4]<stdout>:
+[1,8]<stdout>:Available IB devices:
+[1,8]<stdout>:  0: mlx5_0 (guid: 1070:fd03:002e:7340) <-- chosen
+[1,8]<stdout>:
+[1,3]<stdout>:Available IB devices:
+[1,3]<stdout>:  0: mlx5_0 (guid: 1070:fd03:002e:7450) <-- chosen
+[1,3]<stdout>:
+[1,2]<stdout>:  0: mlx5_0 (guid: 1070:fd03:002e:7450) <-- chosen
+[1,2]<stdout>:
+[1,4]<stdout>:  chosen gid: 3
+[1,4]<stdout>:
+[1,5]<stdout>:  chosen gid: 3
+[1,5]<stdout>:
+[1,9]<stdout>:  chosen gid: 3
+[1,9]<stdout>:
+[1,8]<stdout>:  chosen gid: 3
+[1,8]<stdout>:
+[1,6]<stdout>:  chosen gid: 3
+[1,6]<stdout>:
+[1,7]<stdout>:  chosen gid: 3
+[1,7]<stdout>:
+[1,3]<stdout>:  chosen gid: 3
+[1,3]<stdout>:
+[1,2]<stdout>:  chosen gid: 3
+[1,2]<stdout>:
+[1,0]<stdout>:  chosen gid: 3
+[1,0]<stdout>:
+[1,1]<stdout>:  chosen gid: 3
+[1,1]<stdout>:
+[1,0]<stdout>:
+[1,0]<stdout>:# OSU MPI Allreduce Latency Test v5.3
+[1,0]<stdout>:# Size       Avg Latency(us)
+[1,0]<stdout>:4                      10.80
+[1,0]<stdout>:8                      10.81
+[1,0]<stdout>:16                     10.79
+[1,0]<stdout>:32                     10.68
+[1,0]<stdout>:64                     10.63
+[1,0]<stdout>:128                    10.64
+[1,0]<stdout>:256                    10.61
+[1,0]<stdout>:512                    10.70
+[1,0]<stdout>:1024                   10.71
+[1,0]<stdout>:2048                   10.74
+[1,0]<stdout>:4096                   10.88
+[1,0]<stdout>:8192                   11.18
+[1,0]<stdout>:16384                  11.82
+[1,0]<stdout>:32768                  15.51
+[1,0]<stdout>:65536                  22.66
+[1,0]<stdout>:131072                 36.83
+[1,0]<stdout>:262144                 64.82
+[1,0]<stdout>:524288                120.85
+[1,0]<stdout>:1048576               233.18
