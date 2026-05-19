@@ -4,6 +4,7 @@ add_executable(mpitofino-sd
 	packet_processor.cc
 	asic_driver.cc
 	distributed_control_plane_agent.cc
+	topology_manager.cpp
 	../common/epoll.cc
 	../common/signalfd.cc
 	../common/simple_types.cc

@@ -8,6 +8,7 @@
 #include "packet_processor.h"
 #include "asic_driver.h"
 #include "distributed_control_plane_agent.h"
+#include "topology_manager.h"
 
 using namespace std;
 
@@ -40,6 +41,7 @@ void main_exc()
 	StateRepository state_repository;
 	state_repository.read_config_file();
 
+	Topology_manager top_manager(state_repository);
 	PacketProcessor packet_processor(state_repository, epoll);
 	ASICDriver asic_driver(state_repository);
 	distributed_control_plane_agent::Agent dcp_agent(state_repository, epoll);
