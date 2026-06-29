@@ -1,3 +1,5 @@
+#define IS_ROOT 0
+
 control AggregationUnit(
 	in my_ingress_headers_t hdr,
 	inout my_ingress_metadata_t meta,
@@ -218,10 +220,26 @@ control Collectives(
 		ig_tm_md.bypass_egress = 1;
 	}
 
+#if IS_ROOT
 	action check_complete_distribute(bit<16> mcast_grp) {
 		ig_dprsr_md.drop_ctl = 0;
 		ig_tm_md.mcast_grp_a = mcast_grp;
+        // if this is compiled, it will fail
+        // put there during debugging, remove the comment when you want to actually use the single switch stuff again
+	//}
+#else
+	action check_complete_parent(PortId_t port) {
+	    /* Based on check_complete_next_pipe */
+
+	    ig_dprsr_md.drop_ctl = 0;
+	    /* Send to other pipe */
+	    /* explicitely dont multicast, so unicast */
+	    ig_tm_md.ucast_egress_port = port;
+	    // i dont think we should be bypassing egress, actually
+	    //ig_tm_md.bypass_egress = 1;
+        meta.bridge_header.to_parent = true;
 	}
+#endif
 
 	table check_complete {
 		key = {
@@ -234,7 +252,11 @@ control Collectives(
 		actions = {
 			check_complete_true;
 			check_complete_next_pipe;
+#if IS_ROOT
 			check_complete_distribute;
+#else
+            check_complete_parent;
+#endif // IS_ROOT
 			NoAction;
 		}
 

@@ -162,6 +162,11 @@ void Agent::on_client_get_channel(Client* client, const proto::ctrl_sd::GetChann
 	if (!ch)
 	{
 		CollectiveChannel c;
+		if (st_repo.is_root_switch()) {
+			// TODO actually implement this stuff.
+			c.is_root = true;
+			c.upstream_port = st_repo.get_upstream_port();
+		}
 
 		c.tag = msg.tag();
 		c.fabric_ip = st_repo.get_collectives_module_ip_addr();

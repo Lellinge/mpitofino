@@ -245,3 +245,70 @@ IPv4Addr StateRepository::get_control_ip_addr()
 {
 	return control_ip_addr;
 }
+
+bool StateRepository::is_root_switch() const {
+	return is_root;
+}
+
+void StateRepository::set_is_root_switch(bool root) {
+	this->is_root = root;
+}
+
+uint16_t StateRepository::get_upstream_port() {
+	return upstream_port;
+}
+
+void StateRepository::set_upstream_port(uint16_t port) {
+	this->upstream_port = port;
+}
+
+MacAddr StateRepository::get_switch_to_switch_src_mac() const {
+	return this->switch_to_switch_src_mac;
+}
+
+const MacAddr *StateRepository::get_switch_to_switch_src_mac_ptr() const {
+	return &(this->switch_to_switch_src_mac);
+}
+
+void StateRepository::set_switch_to_switch_src_mac(MacAddr addr) {
+	this->switch_to_switch_src_mac = addr;
+}
+
+MacAddr StateRepository::get_switch_to_switch_dst_mac() const {
+	return this->switch_to_switch_dst_mac;
+}
+
+const MacAddr *StateRepository::get_switch_to_switch_dst_mac_ptr() const {
+	return &(this->switch_to_switch_dst_mac);
+}
+
+void StateRepository::set_switch_to_switch_dst_mac(MacAddr addr) {
+	this->switch_to_switch_dst_mac = addr;
+}
+
+IPv4Addr StateRepository::get_switch_to_switch_src_ipv4() const {
+	return this->switch_to_switch_src_ipv4;
+}
+
+const IPv4Addr *StateRepository::get_switch_to_switch_src_ipv4_ptr() const {
+	return &(this->switch_to_switch_src_ipv4);
+}
+
+void StateRepository::set_switch_to_switch_src_ipv4(IPv4Addr addr) {
+	this->switch_to_switch_src_ipv4 = addr;
+}
+
+IPv4Addr StateRepository::get_switch_to_switch_dst_ipv4() const {
+	return this->switch_to_switch_dst_ipv4;
+}
+
+const IPv4Addr *StateRepository::get_switch_to_switch_dst_ipv4_ptr() const {
+	return &(this->switch_to_switch_dst_ipv4);
+}
+
+void StateRepository::set_switch_to_switch_dst_ipv4(IPv4Addr addr) {
+	this->switch_to_switch_dst_ipv4 = addr;
+}
+
+
+

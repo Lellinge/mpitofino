@@ -9,6 +9,8 @@ set(MPITOFINO_VERSION_PATCH 1)
 
 set(CMAKE_CXX_FLAGS "-std=gnu++17 -Wall -O3 -gdwarf-2")
 
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+
 
 # Build options
 option(WITH_SD         "Compile switch-daemon. Requires bfrt development files" OFF)
@@ -18,6 +20,7 @@ option(WITH_ND         "Compile node-daemon" ${WITH_CLIENT_LIB})
 
 # Find required packages
 find_package(PkgConfig REQUIRED)
+include(FetchContent)
 
 if (WITH_SD)
 	find_path(BFRT_INCLUDE_DIRS bf_rt/bf_rt.hpp REQUIRED
@@ -25,6 +28,9 @@ if (WITH_SD)
 
 	find_path(BFRT_LIBRARY_DIRS libbfutils.so REQUIRED
 		HINTS "$ENV{SDE_INSTALL}/lib")
+	# json is only used by the sd right now
+	FetchContent_Declare(json URL https://github.com/nlohmann/json/releases/download/v3.12.0/json.tar.xz)
+	FetchContent_MakeAvailable(json)
 endif()
 
 if (WITH_CLIENT_LIB)

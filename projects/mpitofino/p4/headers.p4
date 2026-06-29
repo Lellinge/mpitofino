@@ -160,7 +160,8 @@ header bridge_header_t {
 	bit<16> agg_unit;
 	bit<32> icrc;
 	bool is_roce_ack;  // Avoid parsing the whole header stack in the egress pipeline
-	bit<7> pad;
+    bool to_parent; // to avoid a lot of the roce and so on stuff since thats unnecessary for switch to switch communication
+	bit<6> pad;
 }
 
 

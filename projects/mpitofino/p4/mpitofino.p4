@@ -42,6 +42,7 @@ parser IngressParser(
 		meta.bridge_header.setValid();
 		meta.bridge_header.agg_unit = 65535;
 		meta.bridge_header.is_roce_ack = false;
+        meta.bridge_header.to_parent = false; // set in check_complete_parent if true
 
 		transition select(ig_intr_md.ingress_port) {
 			64 : parse_cpoffload;

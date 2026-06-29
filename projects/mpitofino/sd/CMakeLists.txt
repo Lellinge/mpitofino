@@ -49,3 +49,5 @@ target_link_libraries(mpitofino-sd PRIVATE
 	-ldriver
 	${PROTOBUF_LIBRARIES}
 )
+
+target_link_libraries(mpitofino-sd PRIVATE nlohmann_json::nlohmann_json)

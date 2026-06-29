@@ -41,6 +41,9 @@ struct CollectiveChannel final
 	std::map<uint64_t, Participant> participants;
 
 	int type{};
+
+	bool is_root;
+	uint16_t upstream_port;
 };
 
 
@@ -83,6 +86,15 @@ protected:
 
 	IPv4Addr control_ip_addr;
 
+	// Stuff to handle multi-switch topologies
+	bool is_root;
+	uint16_t upstream_port;
+
+  MacAddr switch_to_switch_src_mac;
+  MacAddr switch_to_switch_dst_mac;
+  IPv4Addr switch_to_switch_src_ipv4;
+  IPv4Addr switch_to_switch_dst_ipv4;
+
 public:
 	void read_config_file();
 
@@ -122,6 +134,28 @@ public:
 
 	/* IP-address of the control plane */
 	IPv4Addr get_control_ip_addr();
+	bool is_root_switch() const;
+	void set_is_root_switch(bool root);
+	uint16_t get_upstream_port();
+	void set_upstream_port(uint16_t port);
+
+  MacAddr get_switch_to_switch_src_mac() const;
+	const MacAddr* get_switch_to_switch_src_mac_ptr() const;
+  // TODO iirc theres a ip addr/mac that represents the switch itself. I should figure that out and use it instead of manually configuring it
+  void set_switch_to_switch_src_mac(MacAddr addr);
+
+  MacAddr get_switch_to_switch_dst_mac() const;
+	const MacAddr* get_switch_to_switch_dst_mac_ptr() const;
+  // TODO iirc theres a ip addr/mac that represents the switch itself. I should figure that out and use it instead of manually configuring it
+  void set_switch_to_switch_dst_mac(MacAddr addr);
+
+  IPv4Addr get_switch_to_switch_src_ipv4() const;
+	const IPv4Addr* get_switch_to_switch_src_ipv4_ptr() const;
+  void set_switch_to_switch_src_ipv4(IPv4Addr addr);
+
+  IPv4Addr get_switch_to_switch_dst_ipv4() const;
+	const IPv4Addr* get_switch_to_switch_dst_ipv4_ptr() const;
+  void set_switch_to_switch_dst_ipv4(IPv4Addr addr);
 };
 
 #endif /* __STATE_REPOSITORY_H */

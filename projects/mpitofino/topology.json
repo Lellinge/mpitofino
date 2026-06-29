@@ -1,0 +1,8 @@
+{
+	"root" : false,
+	"upstream_port" : 388,
+	"src_mac_addr" : "02:80:00:00:0f:01",
+	"dst_mac_addr" : "02:80:00:00:0f:01",
+	"src_ipv4_addr" : "10.10.127.1",
+	"dst_ipv4_addr" : "10.10.127.2"
+}

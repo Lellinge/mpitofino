@@ -1,4 +1,4 @@
-control CollectivesDistributor(
+ control CollectivesDistributor(
 	inout my_egress_headers_t hdr,
 	inout my_egress_metadata_t meta,
 	in egress_intrinsic_metadata_t eg_intr_md)
@@ -41,9 +41,51 @@ control CollectivesDistributor(
 		size = 1024;
 	}
 
+	action output_address_parent(
+                     mac_addr_t src_mac,
+                     mac_addr_t dst_mac,
+                     ipv4_addr_t src_ip,
+            ipv4_addr_t dst_ip) {
+                hdr.ethernet.src_addr = src_mac;
+                hdr.ethernet.dst_addr = dst_mac;
+
+                hdr.ipv4.src_addr = src_ip;
+                hdr.ipv4.dst_addr = dst_ip;
+
+                hdr.udp.src_port = 4791;
+                hdr.udp.dst_port = 4791;
+
+                hdr.udp.checksum = 0;
+
+                // remove the roce stuff if were talking to another switch
+                // roce is necessary for the rdma capabilites on nodes, but switches dont care
+                hdr.ipv4.total_length = hdr.ipv4.total_length - 12;
+                hdr.roce.setInvalid();
+               }
+
+
+
+    table parent_output_address {
+          actions = {
+                  output_address_parent;
+                  //NoAction;
+          }
+
+          //default_action = output_address_parent;
+          // since there is no key
+          size = 1;
+
+        }
+
+
+
 	apply {
+          if (meta.bridge_header.to_parent) {
+           parent_output_address.apply();
+        } else {
 		/* Fill source and destination addresses on result packet output */
 		output_address.apply();
+        }
 
 		/* Calculate checksum */
 	}

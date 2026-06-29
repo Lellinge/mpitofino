@@ -158,6 +158,7 @@ std::unique_ptr<BfRtTableData> table_create_data_action(
 		const BfRtTable* table, const char* action, const table_field_desc_t<Ts>&... args)
 {
 	bf_rt_id_t action_id;
+    std::cout << "in table_create_data_action: " << action << std::endl;
 	check_bf_status(
 			table->actionIdGet(action, &action_id),
 			"Failed to resolve action name");
@@ -227,6 +228,16 @@ inline bf_status_t table_add_or_mod(
 		return ret;
 
 	return table.tableEntryAdd(session, dev_tgt, key, data);
+}
+
+// Helper added by lars to use the default api instead
+	inline bf_status_t table_default_set(
+		const BfRtTable& table,
+		const bfrt::BfRtSession& session,
+		const bf_rt_target_t& dev_tgt,
+		const BfRtTableData& data) {
+	auto ret = table.tableDefaultEntrySet(session, dev_tgt, data);
+	return ret;
 }
 
 
