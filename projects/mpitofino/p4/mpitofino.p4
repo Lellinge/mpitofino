@@ -499,6 +499,7 @@ control IngressDeparser(
 			});
 		}
 
+            // TODO i think here the trailer is added???
 		pkt.emit(meta.bridge_header);
 		pkt.emit(hdr);
 	}
@@ -547,6 +548,7 @@ parser EgressParser(
 		pkt.extract(hdr.ethernet);
 		pkt.extract(hdr.ipv4);
 		pkt.extract(hdr.udp);
+		// what happens if this cant work? (i.e. no roce header to parse)
 		pkt.extract(hdr.roce);
 
 		transition accept;
@@ -562,13 +564,17 @@ control Egress(
 	inout egress_intrinsic_metadata_for_output_port_t eg_oport_md)
 {
 	CollectivesDistributor() collectives_distributor;
+    CollectivesDistributorParent() collectives_distributor_parent;
 
 	CRCPolynomial<bit<32>>(0x04c11db7, true, true, false, 0xffffffff, 0xffffffff) icrc_poly;
 	Hash<bit<32>>(HashAlgorithm_t.CUSTOM, icrc_poly) icrc_hash1;
 	Hash<bit<32>>(HashAlgorithm_t.CUSTOM, icrc_poly) icrc_hash2;
 
 	apply {
-		if (hdr.roce_ack.isValid())
+	    if (meta.bridge_header.to_parent == true) {
+	        collectives_distributor_parent.apply(hdr, meta, eg_intr_md);
+	    }
+		else if (hdr.roce_ack.isValid())
 		{
 			bit<32> tmp;
 
@@ -718,6 +724,10 @@ control Egress(
 
 			/* xor const */
 			hdr.recirc_fanout.icrc = tmp ^ 0x60d95a72;
+		} else if (meta.bridge_header.to_parent == true) {
+            collectives_distributor_parent.apply(hdr, meta, eg_intr_md);
+		    //collectives_distributor.apply(hdr, meta, eg_intr_md);
+
 		}
 	}
 }

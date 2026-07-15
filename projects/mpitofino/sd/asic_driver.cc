@@ -79,7 +79,8 @@ void ASICDriver::find_tables()
 	RES_TBL("Ingress.collectives.unit_selector", collectives_unit_selector);
 	RES_TBL("Ingress.collectives.check_complete", collectives_check_complete);
 	RES_TBL("Egress.collectives_distributor.output_address", collectives_output_address);
-    RES_TBL("Egress.collectives_distributor.parent_output_address", collectives_parent_output_address);
+    //RES_TBL("Egress.collectives_distributor.parent_output_address", collectives_parent_output_address);
+	RES_TBL("Egress.collectives_distributor_parent.parent_output_address", collectives_dist_parent_output);
 	RES_TBL("Ingress.roce_ack_reflector", roce_ack_reflector);
 
 	RES_TBL("Ingress.collectives.agg00.choose_action", collectives_choose_action[0]);
@@ -650,7 +651,7 @@ void ASICDriver::on_st_repo_channels()
 			"Failed to update CollectivesDistributor.output_address table");
 
             /* Output to parent address */
-            check_bf_status(table_default_set(
+            /*check_bf_status(table_default_set(
                                              *collectives_parent_output_address, *session, pipe_parent,
                                              *table_create_data_action<const uint8_t*, const uint8_t*,
                                              const uint8_t*, const uint8_t*>(
@@ -669,7 +670,24 @@ void ASICDriver::on_st_repo_channels()
                                                                             	reinterpret_cast<const uint8_t*>(st_repo.get_switch_to_switch_dst_ipv4_ptr()),
                                                                             	sizeof(st_repo.get_switch_to_switch_dst_ipv4())}
                                                                             	)),
-                                                                            	"Failed to update CollectivesDistributor.output_address_parent table");
+                                                                            	"Failed to update CollectivesDistributor.output_address_parent table");*/
+
+			check_bf_status(table_default_set(*collectives_dist_parent_output, *session, pipe_parent,
+				*table_create_data_action<const uint8_t*, const uint8_t*, const uint8_t*, const uint8_t*>(
+					collectives_dist_parent_output, "Egress.collectives_distributor_parent.output_address_parent",
+					{"src_mac",
+					reinterpret_cast<const uint8_t*>(st_repo.get_switch_to_switch_src_mac_ptr()),
+					sizeof(st_repo.get_switch_to_switch_src_mac())},
+					{"dst_mac",
+					reinterpret_cast<const uint8_t*>(st_repo.get_switch_to_switch_dst_mac_ptr()),
+					sizeof(st_repo.get_switch_to_switch_dst_mac())},
+					{"src_ip",
+					reinterpret_cast<const uint8_t*>(st_repo.get_switch_to_switch_src_ipv4_ptr()),
+					sizeof(st_repo.get_switch_to_switch_src_ipv4())},
+					{"dst_ip",
+					reinterpret_cast<const uint8_t*>(st_repo.get_switch_to_switch_dst_ipv4_ptr()),
+					sizeof(st_repo.get_switch_to_switch_dst_ipv4())}
+					)), "Failed to update CollectivesDistributorParent.output_address_parent table");
 
 
 

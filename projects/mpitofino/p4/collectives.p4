@@ -236,7 +236,7 @@ control Collectives(
 	    /* explicitely dont multicast, so unicast */
 	    ig_tm_md.ucast_egress_port = port;
 	    // i dont think we should be bypassing egress, actually
-	    //ig_tm_md.bypass_egress = 1;
+	    ig_tm_md.bypass_egress = 0;
         meta.bridge_header.to_parent = true;
 	}
 #endif
