@@ -161,7 +161,8 @@ header bridge_header_t {
 	bit<32> icrc;
 	bool is_roce_ack;  // Avoid parsing the whole header stack in the egress pipeline
     bool to_parent; // to avoid a lot of the roce and so on stuff since thats unnecessary for switch to switch communication
-	bit<6> pad;
+	bool was_recirc_already;
+	bit<5> pad;
 }
 
 
@@ -174,4 +175,9 @@ header recirc_fanout_h {
 header recirc_fanout_payload_h {
 	bit<((12+8+20+14)*8)> headers;
 	bit<(256*8)> payload;
+}
+
+header to_parent_h {
+    bool to_parent;
+    bit<7> pad;
 }

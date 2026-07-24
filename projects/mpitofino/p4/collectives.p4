@@ -238,6 +238,7 @@ control Collectives(
 	    // i dont think we should be bypassing egress, actually
 	    ig_tm_md.bypass_egress = 0;
         meta.bridge_header.to_parent = true;
+		meta.bridge_header.was_recirc_already = true;
 	}
 #endif
 

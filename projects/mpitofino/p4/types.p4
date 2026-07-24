@@ -13,6 +13,7 @@ struct node_bitmap_t {
 
 
 struct my_ingress_headers_t {
+    to_parent_h to_parent;
 	recirc_fanout_h recirc_fanout;
 	ethernet_h	ethernet;
 	ipv4_h ipv4;
@@ -41,6 +42,7 @@ struct my_ingress_metadata_t {
 
 
 struct my_egress_headers_t {
+    to_parent_h to_parent;
 	recirc_fanout_h recirc_fanout;
 	ethernet_h	ethernet;
 	ipv4_h ipv4;

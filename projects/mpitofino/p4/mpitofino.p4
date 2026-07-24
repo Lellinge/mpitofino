@@ -119,8 +119,8 @@ parser IngressParser(
 		transition accept;
 	}
 
-
 	state parse_recirc_fanout {
+        pkt.extract(hdr.to_parent);
 		pkt.extract(hdr.recirc_fanout);
 		pkt.extract(hdr.recirc_fanout_payload);
 		pkt.extract(hdr.roce_checksum);
@@ -279,10 +279,16 @@ control Ingress(
 		{
 			adapt_recirc_fanout_port.apply();
 			hdr.roce_checksum.icrc = hdr.recirc_fanout.icrc;
+
+			if (hdr.to_parent.to_parent) {
+		        hdr.roce_checksum.setInvalid();
+		        // this is the minimum change that should work. This way I can reuse the existing code for multiple pipes, which
+			}
 			ig_tm_md.bypass_egress = 1;
 			ig_dprsr_md.drop_ctl = 0;
 
 			hdr.recirc_fanout.setInvalid();
+			hdr.to_parent.setInvalid();
 		}
 
 		if (meta.cpoffload.isValid() && meta.cpoffload.port_id != 65535)
@@ -573,6 +579,10 @@ control Egress(
 	apply {
 	    if (meta.bridge_header.to_parent == true) {
 	        collectives_distributor_parent.apply(hdr, meta, eg_intr_md);
+            hdr.to_parent.to_parent = true;
+			if (!meta.bridge_header.was_recirc_already)  {
+            	hdr.to_parent.setValid();
+			}
 	    }
 		else if (hdr.roce_ack.isValid())
 		{
@@ -724,11 +734,12 @@ control Egress(
 
 			/* xor const */
 			hdr.recirc_fanout.icrc = tmp ^ 0x60d95a72;
-		} else if (meta.bridge_header.to_parent == true) {
+		}
+		/* else if (meta.bridge_header.to_parent == true) {
             collectives_distributor_parent.apply(hdr, meta, eg_intr_md);
 		    //collectives_distributor.apply(hdr, meta, eg_intr_md);
 
-		}
+		}*/
 	}
 }
 
