@@ -181,3 +181,7 @@ header to_parent_h {
     bool to_parent;
     bit<7> pad;
 }
+
+header s2spayload_h {
+
+}

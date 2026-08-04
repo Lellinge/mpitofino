@@ -22,6 +22,17 @@ message GetChannel {
 	uint32 switch_port = 8;
 }
 
+message GetChannelS2S {
+    repeated uint64 agg_group_client_ids = 1;
+    uint64 client_id = 2;
+    uint64 tag = 3;
+    /* this is for communication between two switches, not a node and a switch */
+    uint32 client_qp = 4;
+    uint32 client_ip = 5;
+    uint64 client_mac = 6;
+    uint32 switch_port = 7;
+}
+
 message GetChannelResponse {
 	uint64 client_id = 1;
 	uint64 tag = 2;
@@ -40,5 +51,6 @@ message NdRequest {
 	oneof messages {
 		GetChannel get_channel = 1;
 		UnrefChannel unref_channel = 2;
+		GetChannelS2S get_channel_s2s = 3;
 	}
 }

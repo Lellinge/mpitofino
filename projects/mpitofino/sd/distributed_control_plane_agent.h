@@ -26,6 +26,10 @@ struct Client final
 	std::set<uint64_t> channels;
 };
 
+struct OtherSwitch final {
+	WrappedFD wfd;
+};
+
 
 class Agent final
 {
@@ -38,13 +42,19 @@ protected:
 
 	/* Use liste because it does not involve copying/moving of elements */
 	std::list<Client> clients;
+	OtherSwitch parent;
 
 	void initialize_client_interface();
+	void initialize_parent_interface();
 
 	void on_new_client(int, uint32_t);
 	void on_client_fd(Client* client, int fd, uint32_t events);
 	void on_client_get_channel(Client* client, const proto::ctrl_sd::GetChannel& msg);
+	void on_client_get_channel_s2s(Client* client, const proto::ctrl_sd::GetChannelS2S& msg);
 	void on_client_unref_channel(Client* client, const proto::ctrl_sd::UnrefChannel& msg);
+	void on_parent_fd(int fd, uint32_t events);
+	void parent_create_channel();
+
 
 	std::map<
 		uint64_t,

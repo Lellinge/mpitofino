@@ -4,6 +4,13 @@
 #include "common/com_utils.h"
 #include "distributed_control_plane_agent.h"
 
+#include <cstring>
+#include <pstl/execution_defs.h>
+#include <sys/socket.h>
+
+#include "../build/sd/proto_out/common.pb.h"
+#include "../common/packet_headers.h"
+
 extern "C" {
 #include <sys/socket.h>
 #include <sys/types.h>
@@ -30,6 +37,7 @@ Agent::Agent(
 		st_repo(st_repo), epoll(epoll)
 {
 	initialize_client_interface();
+	initialize_parent_interface();
 }
 
 
@@ -64,6 +72,58 @@ void Agent::initialize_client_interface()
 					 placeholders::_1, placeholders::_2));
 
 	client_listen_wfd = move(wfd);
+/*
+	WrappedFD broadcast_read_fd;
+	broadcast_read_fd.set_errno(socket(AF_INET, SOCK_DGRAM, 0), "socket(udp) for listening to discovery broadcasts");
+
+	struct sockaddr_in discovery_addr = {
+		.sin_family = AF_INET,
+		.sin_port = htons(UDP_PORT_TDP)
+	};
+
+	discovery_addr.sin_addr.s_addr = INADDR_ANY;
+
+	check_syscall(bind(broadcast_read_fd.get_fd(), (struct sockaddr*)&discovery_addr, sizeof(discovery_addr)),
+		"bind(udp for the listening to discovery)");
+
+	broadcast_read_fd = move(broadcast_read_fd);
+
+	epoll.add_fd(this->switch_discovery_listener.get_fd(),
+		EPOLLIN,
+		bind(&Agent::, this, placeholders::_1, placeholders::_2));*/
+}
+
+void Agent::initialize_parent_interface() {
+	WrappedFD wfd;
+	wfd.set_errno(socket(AF_INET, SOCK_STREAM, 0), "socket(control plane)");
+
+	struct sockaddr_in addr = {
+		.sin_family = AF_INET,
+		.sin_port = htons(TCP_PORT_CTRL_COLL)
+	};
+
+	memcpy(&addr.sin_addr.s_addr, st_repo.get_parent_control_ip_ptr(), sizeof(st_repo.get_parent_control_ip()));
+
+	check_syscall(
+		connect(
+			wfd.get_fd(),
+			(struct sockaddr*)&addr,
+			sizeof(addr)), "connect(other switch)");
+
+	epoll.add_fd(wfd.get_fd(), EPOLLIN | EPOLLHUP | EPOLLRDHUP,
+		bind(&Agent::on_parent_fd, this, placeholders::_1, placeholders::_2));
+
+	parent.wfd = move(wfd);
+
+}
+
+void Agent::on_parent_fd(int fd, uint32_t events) {
+	// this is mostly based on NodeDaemon::on_switch_fd and Agent::on_client_fd
+	bool disconnect = events & (EPOLLHUP | EPOLLRDHUP);
+
+	if (events & EPOLLIN) {
+
+	}
 }
 
 
@@ -119,6 +179,9 @@ void Agent::on_client_fd(Client* client, int fd, uint32_t events)
 			case proto::ctrl_sd::NdRequest::kUnrefChannel:
 				on_client_unref_channel(client, msg->unref_channel());
 				break;
+			case proto::ctrl_sd::NdRequest::kGetChannelS2S:
+				on_client_get_channel_s2s(client, msg->get_channel_s2s());
+				break;
 
 			default:
 				throw runtime_error("Unsupported message from client");
@@ -166,6 +229,8 @@ void Agent::on_client_get_channel(Client* client, const proto::ctrl_sd::GetChann
 			// TODO actually implement this stuff.
 			c.is_root = true;
 			c.upstream_port = st_repo.get_upstream_port();
+			// TODO talk to the the parent
+			parent_create_channel();
 		}
 
 		c.tag = msg.tag();
@@ -238,6 +303,99 @@ void Agent::on_client_get_channel(Client* client, const proto::ctrl_sd::GetChann
 
 		pending_get_channel_responses.erase(pi);
 	}
+}
+
+void Agent::on_client_get_channel_s2s(Client *client, const proto::ctrl_sd::GetChannelS2S &msg) {
+	// TODO which parts are not necessary for this?
+	auto ch = st_repo.get_channel(msg.tag());
+
+	if (!ch) {
+		CollectiveChannel c;
+		if (st_repo.is_root_switch()) {
+			// TODO implement this
+		}
+		// TODO get and set all the other stuff. Even if this client might not need it, we need to be able to mix nodes and S2S
+
+		c.tag = msg.tag();
+		c.fabric_ip = st_repo.get_collectives_module_ip_addr();
+		c.fabric_qp_common = st_repo.get_free_coll_qp_common();
+		c.fabric_mac = st_repo.get_collectives_module_mac_addr();
+
+		c.agg_unit = st_repo.get_free_agg_unit();
+
+		for (auto cid : msg.agg_group_client_ids()) {
+			CollectiveChannel::Participant p;
+			p.is_s2s = true;
+			p.client_id = cid;
+			c.participants.insert( {cid, p});
+		}
+		// TODO right now only allreduce_int32 is supported anyway, so this is fine but this needs to be refactored longterm
+		c.type = ALLREDUCE_INT32;
+
+		st_repo.add_channel(c);
+		ch = st_repo.get_channel(c.tag);
+
+		auto pi = pending_get_channel_responses.find(ch->tag);
+		if (pi != pending_get_channel_responses.end()) {
+			pending_get_channel_responses.erase(pi);
+		}
+	}
+
+	client->channels.insert(ch->tag);
+
+	auto _client_ip = msg.client_ip();
+	auto client_mac = msg.client_mac();
+
+	if (msg.switch_port() < 0 || msg.switch_port() >= 128 * 4) {
+		throw runtime_error("Switch port received from client out of range");
+	}
+
+	auto client_ip = *reinterpret_cast<IPv4Addr*>(&_client_ip);
+	auto fabric_qp = get_next_fabric_qp(ch, client_ip);
+
+	st_repo.update_channel_participant(msg.tag(), msg.client_id(),
+		client_ip, msg.client_qp(),
+		*reinterpret_cast<MacAddr*>(&client_mac), msg.switch_port(),
+		fabric_qp);
+
+	proto::ctrl_sd::GetChannelResponse resp;
+	resp.set_client_id(msg.client_id());
+	resp.set_tag(ch->tag);
+	resp.set_fabric_ip(*reinterpret_cast<const uint32_t*>(&ch->fabric_ip));
+	resp.set_fabric_qp(fabric_qp);
+
+	auto [pi, p_inserted] = pending_get_channel_responses.try_emplace(ch->tag);
+	auto& pm = pi->second;
+	pm.push_back({client, resp});
+
+	if (pm.size() == ch->participants.size()) {
+		for (auto& [pc, presp] : pm) {
+			send_protobuf_message_simple_stream(pc->wfd.get_fd(), presp);
+		}
+		pending_get_channel_responses.erase(pi);
+	}
+
+}
+
+void Agent::parent_create_channel(const proto::ctrl_sd::GetChannel& msg) {
+	// adopted from node_daemon.cc
+	proto::ctrl_sd::NdRequest other_switch_req;
+	auto mutable_get_s2s = other_switch_req.mutable_get_channel_s2s();
+	// TODO this isn't the ideal way to but it should work for now.
+	mutable_get_s2s->set_client_id(st_repo.get_switch_id() + 8192);
+	// pass throught the tag from the lower levels so that the tag for a specific aggregation is constant
+	mutable_get_s2s->set_tag(msg.tag());
+	mutable_get_s2s->set_type(msg.type());
+	uint64_t s2s_src_mac = 0;
+	memcpy(&s2s_src_mac, st_repo.get_switch_to_switch_src_mac_ptr(), sizeof(st_repo.get_switch_to_switch_src_mac()));
+
+	mutable_get_s2s->set_client_mac(s2s_src_mac);
+	mutable_get_s2s->set_client_qp(msg.client_qp());
+	mutable_get_s2s->set_client_ip(msg.client_ip());
+	// TODO this is hardcoded. Ideally this would use the results read from the discovery packets, but thats not implemented right now
+	mutable_get_s2s->set_switch_port(st_repo.get_s2s_dst_switch_port());
+
+
 }
 
 

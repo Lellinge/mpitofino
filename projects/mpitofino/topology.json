@@ -4,5 +4,6 @@
 	"src_mac_addr" : "02:80:00:00:0f:01",
 	"dst_mac_addr" : "02:80:00:00:0f:02",
 	"src_ipv4_addr" : "10.10.127.1",
-	"dst_ipv4_addr" : "10.10.127.2"
+	"dst_ipv4_addr" : "10.10.127.2",
+	"parent_control_ip" : "172.18.0.12"
 }

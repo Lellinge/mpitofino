@@ -310,5 +310,32 @@ void StateRepository::set_switch_to_switch_dst_ipv4(IPv4Addr addr) {
 	this->switch_to_switch_dst_ipv4 = addr;
 }
 
+IPv4Addr StateRepository::get_parent_control_ip() const {
+	return this->parent_control_ip;
+}
+
+const IPv4Addr *StateRepository::get_parent_control_ip_ptr() const {
+	return &(this->parent_control_ip);
+}
+
+void StateRepository::set_parent_control_ip(IPv4Addr addr) {
+	this->parent_control_ip = addr;
+}
+
+uint64_t StateRepository::get_switch_id() const {
+	return this->switch_id;
+}
+
+void StateRepository::set_switch_id(uint64_t id) {
+	this->switch_id = id;
+}
+
+uint32_t StateRepository::get_s2s_dst_switch_port() const {
+	return this->s2s_dst_switch_port;
+}
+
+void StateRepository::set_s2s_dst_switch_port(uint32_t port) {
+	this->s2s_dst_switch_port = port;
+}
 
 

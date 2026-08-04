@@ -84,8 +84,15 @@ parser IngressParser(
 
 		transition select(hdr.udp.dst_port) {
 			4791 : parse_roce;
+			4793 : parse_s2s;
 			default : accept;
 		}
+	}
+
+	state parse_s2s {
+	/* TODO implement */
+	pkt.extract(hdr.aggregate);
+
 	}
 
 	state parse_roce {

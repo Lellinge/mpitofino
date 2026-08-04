@@ -35,6 +35,7 @@ struct CollectiveChannel final
 		uint32_t fabric_qp{};
 		MacAddr mac;
 		uint16_t switch_port{};
+		bool is_s2s = false;
 	};
 
 	/* client-id -> Participant */
@@ -89,11 +90,14 @@ protected:
 	// Stuff to handle multi-switch topologies
 	bool is_root;
 	uint16_t upstream_port;
+	uint64_t switch_id; // this value + 8192 is used as client when doing S2S
+	uint32_t s2s_dst_switch_port;
 
   MacAddr switch_to_switch_src_mac;
   MacAddr switch_to_switch_dst_mac;
   IPv4Addr switch_to_switch_src_ipv4;
   IPv4Addr switch_to_switch_dst_ipv4;
+	IPv4Addr parent_control_ip;
 
 public:
 	void read_config_file();
@@ -138,6 +142,10 @@ public:
 	void set_is_root_switch(bool root);
 	uint16_t get_upstream_port();
 	void set_upstream_port(uint16_t port);
+	uint64_t get_switch_id() const;
+	void set_switch_id(uint64_t id);
+	uint32_t get_s2s_dst_switch_port() const;
+	void set_s2s_dst_switch_port(uint32_t port);
 
   MacAddr get_switch_to_switch_src_mac() const;
 	const MacAddr* get_switch_to_switch_src_mac_ptr() const;
@@ -156,6 +164,10 @@ public:
   IPv4Addr get_switch_to_switch_dst_ipv4() const;
 	const IPv4Addr* get_switch_to_switch_dst_ipv4_ptr() const;
   void set_switch_to_switch_dst_ipv4(IPv4Addr addr);
+
+	IPv4Addr get_parent_control_ip() const;
+	const IPv4Addr* get_parent_control_ip_ptr() const;
+	void set_parent_control_ip(IPv4Addr addr);
 };
 
 #endif /* __STATE_REPOSITORY_H */

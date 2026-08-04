@@ -35,6 +35,7 @@ NodeDaemon::NodeDaemon()
 	/* Identify interface of high performance network. For now, simply
 	 * take the last interface; however obiously a more sophisticated
 	 * heuristic would be required. */
+	// TODO I feel like this should be configurable, not just have a better heuristic (although that would also be good)
 	struct ifaddrs* ifa = nullptr;
 	check_syscall(getifaddrs(&ifa), "getifaddrs");
 

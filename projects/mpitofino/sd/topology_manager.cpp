@@ -12,5 +12,8 @@ Topology_manager::Topology_manager(StateRepository &state_man) : state(state_man
         state.set_switch_to_switch_dst_mac(MacAddr(data["dst_mac_addr"].get<std::string>()));
         state.set_switch_to_switch_src_ipv4(IPv4Addr(data["src_ipv4_addr"].get<std::string>()));
         state.set_switch_to_switch_dst_ipv4(IPv4Addr(data["dst_ipv4_addr"].get<std::string>()));
+        state.set_parent_control_ip(IPv4Addr(data["parent_control_ip"].get<std::string>()));
+        state.set_switch_id(data["switch_id"].get<uint64_t>());
+        state.set_s2s_dst_switch_port(data["s2s_dst_switch_port"].get<uint32_t>());
     }
 }
