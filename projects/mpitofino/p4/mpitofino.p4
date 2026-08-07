@@ -91,7 +91,10 @@ parser IngressParser(
 
 	state parse_s2s {
 	/* TODO implement */
+	pkt.extract(hdr.s2s);
 	pkt.extract(hdr.aggregate);
+	// TODO do we even need to parse this or can we just ignore it?
+	pkt.extract(hdr.roce_checksum);
 
 	}
 

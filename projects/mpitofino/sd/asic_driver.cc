@@ -77,6 +77,7 @@ void ASICDriver::find_tables()
 	RES_TBL("Ingress.switching_table_src", switching_table_src);
 
 	RES_TBL("Ingress.collectives.unit_selector", collectives_unit_selector);
+	RES_TBL("Ingress.collectives.unit_selector_s2s", collectives_unit_selector_s2s);
 	RES_TBL("Ingress.collectives.check_complete", collectives_check_complete);
 	RES_TBL("Egress.collectives_distributor.output_address", collectives_output_address);
     //RES_TBL("Egress.collectives_distributor.parent_output_address", collectives_parent_output_address);
@@ -622,6 +623,22 @@ void ASICDriver::on_st_repo_channels()
 					{"node_bitmap_low", node_bitmap_low[pipe]},
 					{"node_bitmap_high", node_bitmap_high[pipe]})),
 			"Failed to update Collectives.unit_selector table");
+			check_bf_status(table_add_or_mod(*collectives_unit_selector_s2s, *session, pipe_tgt,
+				*table_create_key<const uint8_t*, const uint8_t*, uint64_t, uint64_t>(
+					collectives_unit_selector_s2s,
+					table_field_desc_t<const uint8_t*>::create_ternary(
+						"hdr.ipv4.src_addr",
+						reinterpret_cast<const uint8_t*>(&part.ip), ip_mask,
+						sizeof(part.ip)),
+						{"hdr.ipv4.dst_addr",
+						reinterpret_cast<const uint8_t*>(&rc->fabric_ip), sizeof(rc->fabric_ip)},
+						*table_create_data_action<uint64_t, uint64_t, uint64_t>(
+							collectives_unit_selector_s2s, "Ingress.collectives.select_agg_unit_s2s",
+							{"agg_unit", rc->agg_unit},
+							{"node_bitmap_low", node_bitmap_low[pipe]},
+							{"node_bitmap_high", node_bitmap_high[pipe]}
+						)
+					)), "Failed to update Collectives.unit_selector_s2s table");
 
 
 			/* Output address update */

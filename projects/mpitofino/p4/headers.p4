@@ -78,6 +78,10 @@ header roce_h {
 	ib_psn_t psn;
 }
 
+header s2s_h {
+    ib_qp_t dst_qp;
+}
+
 header roce_checksum_h {
 	bit<32> icrc;
 }

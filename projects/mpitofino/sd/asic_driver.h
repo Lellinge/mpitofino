@@ -50,6 +50,7 @@ protected:
 	const bfrt::BfRtTable* switching_table_src = nullptr;
 
 	const bfrt::BfRtTable* collectives_unit_selector = nullptr;
+	const bfrt::BfRtTable* collectives_unit_selector_s2s = nullptr;
 	const bfrt::BfRtTable* collectives_check_complete = nullptr;
 	const bfrt::BfRtTable* collectives_choose_action[32]{};
 	const bfrt::BfRtTable* collectives_output_address = nullptr;

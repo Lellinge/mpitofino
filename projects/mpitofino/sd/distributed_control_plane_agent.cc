@@ -230,7 +230,7 @@ void Agent::on_client_get_channel(Client* client, const proto::ctrl_sd::GetChann
 			c.is_root = true;
 			c.upstream_port = st_repo.get_upstream_port();
 			// TODO talk to the the parent
-			parent_create_channel();
+			parent_create_channel(msg);
 		}
 
 		c.tag = msg.tag();
@@ -385,7 +385,9 @@ void Agent::parent_create_channel(const proto::ctrl_sd::GetChannel& msg) {
 	mutable_get_s2s->set_client_id(st_repo.get_switch_id() + 8192);
 	// pass throught the tag from the lower levels so that the tag for a specific aggregation is constant
 	mutable_get_s2s->set_tag(msg.tag());
-	mutable_get_s2s->set_type(msg.type());
+	// TODO right now get_channel_s2s does not have a type field, since there is only one valid option. This might change in the future
+	// (iirc Sydney is working on some floating point stuff, although I dont know if I that will look different to the switches)
+	//mutable_get_s2s->set_type(msg.type());
 	uint64_t s2s_src_mac = 0;
 	memcpy(&s2s_src_mac, st_repo.get_switch_to_switch_src_mac_ptr(), sizeof(st_repo.get_switch_to_switch_src_mac()));
 
@@ -395,7 +397,10 @@ void Agent::parent_create_channel(const proto::ctrl_sd::GetChannel& msg) {
 	// TODO this is hardcoded. Ideally this would use the results read from the discovery packets, but thats not implemented right now
 	mutable_get_s2s->set_switch_port(st_repo.get_s2s_dst_switch_port());
 
+	send_protobuf_message_simple_stream(parent.wfd.get_fd(), other_switch_req);
 
+	proto::ctrl_sd::GetChannelResponse reply;
+	parent.pending_get_channel_responses.try_emplace({msg.client_id(), msg.tag()}, reply);
 }
 
 

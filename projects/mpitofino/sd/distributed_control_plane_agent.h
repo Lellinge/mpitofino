@@ -28,6 +28,10 @@ struct Client final
 
 struct OtherSwitch final {
 	WrappedFD wfd;
+	// based on Client in node_daemon.h
+	/* (client_id, tag) -> get_channel response */
+	std::map<std::tuple<uint64_t, uint64_t>, proto::ctrl_sd::GetChannelResponse>
+	pending_get_channel_responses;
 };
 
 
@@ -53,7 +57,7 @@ protected:
 	void on_client_get_channel_s2s(Client* client, const proto::ctrl_sd::GetChannelS2S& msg);
 	void on_client_unref_channel(Client* client, const proto::ctrl_sd::UnrefChannel& msg);
 	void on_parent_fd(int fd, uint32_t events);
-	void parent_create_channel();
+	void parent_create_channel(const proto::ctrl_sd::GetChannel& msg);
 
 
 	std::map<

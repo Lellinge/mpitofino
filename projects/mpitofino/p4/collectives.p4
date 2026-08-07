@@ -274,10 +274,23 @@ control Collectives(
 		// Setup aggregation configuration
 		ig_dprsr_md.drop_ctl = 1;
 		meta.agg_have_unit = true;
+		// ++ is bit string concatenation
 		meta.agg_unit = agg_unit[7:0] ++ hdr.roce.psn[7:0];
 		meta.bridge_header.agg_unit = agg_unit;
 		meta.node_bitmap.low  = node_bitmap_low;
 		meta.node_bitmap.high = node_bitmap_high;
+	}
+
+	action select_agg_unit_s2s(bit<16> agg_unit,
+	        bit<32> node_bitmap_low, bit<32> node_bitmap_high)
+	{
+        // this is based on select_agg_unit
+        ig_dprsr_md.drop_ctrl = 1;
+        meta.agg_have_unit = true;
+        mega.agg_unit = agg_unit[7:0] ++ hdr.s2s.psn[7:0];
+        meta.bridge_header.agg_unit = agg_unit;
+        meta.node_bitmap.low = node_bitmap_low;
+        meta.node_bitmap.high = node_bitmap_high;
 	}
 
 	@stage(0)
@@ -297,6 +310,26 @@ control Collectives(
 		default_action = NoAction;
 
 		size = 1024;
+	}
+
+
+	@stage(0)
+	table unit_selector_s2s {
+	    key = {
+	        hdr.ipv4.src_addr : ternary;
+	        hdr.ipv4.dst_addr : exact;
+	        // TODO make this real
+	        hdr.s2s.dst_qp  : ternary;
+	        meta.ingress_port : ternary;
+	    }
+
+	    actions = {
+	        select_agg_unit_s2s;
+	        NoAction;
+	    }
+
+	    default_action = NoAction;
+	    size = 1024;
 	}
 
 	apply {

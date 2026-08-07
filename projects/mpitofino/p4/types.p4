@@ -19,6 +19,8 @@ struct my_ingress_headers_t {
 	ipv4_h ipv4;
 	udp_h udp;
 	roce_h roce;
+	// TODO does this work
+	s2s_h s2s;
 	aggregate_h aggregate;
 	recirc_fanout_payload_h recirc_fanout_payload;
 	roce_checksum_h roce_checksum;
