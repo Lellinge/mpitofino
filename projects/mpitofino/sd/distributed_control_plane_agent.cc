@@ -37,7 +37,9 @@ Agent::Agent(
 		st_repo(st_repo), epoll(epoll)
 {
 	initialize_client_interface();
-	initialize_parent_interface();
+	if (not st_repo.is_root_switch()) {
+		initialize_parent_interface();
+	}
 }
 
 
@@ -179,7 +181,8 @@ void Agent::on_client_fd(Client* client, int fd, uint32_t events)
 			case proto::ctrl_sd::NdRequest::kUnrefChannel:
 				on_client_unref_channel(client, msg->unref_channel());
 				break;
-			case proto::ctrl_sd::NdRequest::kGetChannelS2S:
+				case proto::ctrl_sd::NdRequest::kGetChannelS2S:
+				std::cout << "recieved a getchannelS2S message" << std::endl;
 				on_client_get_channel_s2s(client, msg->get_channel_s2s());
 				break;
 
@@ -225,7 +228,7 @@ void Agent::on_client_get_channel(Client* client, const proto::ctrl_sd::GetChann
 	if (!ch)
 	{
 		CollectiveChannel c;
-		if (st_repo.is_root_switch()) {
+		if (not st_repo.is_root_switch()) {
 			// TODO actually implement this stuff.
 			c.is_root = true;
 			c.upstream_port = st_repo.get_upstream_port();
@@ -317,7 +320,8 @@ void Agent::on_client_get_channel_s2s(Client *client, const proto::ctrl_sd::GetC
 		// TODO get and set all the other stuff. Even if this client might not need it, we need to be able to mix nodes and S2S
 
 		c.tag = msg.tag();
-		c.fabric_ip = st_repo.get_collectives_module_ip_addr();
+		//c.fabric_ip = st_repo.get_collectives_module_ip_addr();
+		c.fabric_ip = IPv4Addr("10.10.127.2");
 		c.fabric_qp_common = st_repo.get_free_coll_qp_common();
 		c.fabric_mac = st_repo.get_collectives_module_mac_addr();
 
@@ -350,7 +354,8 @@ void Agent::on_client_get_channel_s2s(Client *client, const proto::ctrl_sd::GetC
 		throw runtime_error("Switch port received from client out of range");
 	}
 
-	auto client_ip = *reinterpret_cast<IPv4Addr*>(&_client_ip);
+	//auto client_ip = *reinterpret_cast<IPv4Addr*>(&_client_ip);
+	auto client_ip = IPv4Addr("10.10.127.1");
 	auto fabric_qp = get_next_fabric_qp(ch, client_ip);
 
 	st_repo.update_channel_participant(msg.tag(), msg.client_id(),
@@ -396,6 +401,8 @@ void Agent::parent_create_channel(const proto::ctrl_sd::GetChannel& msg) {
 	mutable_get_s2s->set_client_ip(msg.client_ip());
 	// TODO this is hardcoded. Ideally this would use the results read from the discovery packets, but thats not implemented right now
 	mutable_get_s2s->set_switch_port(st_repo.get_s2s_dst_switch_port());
+
+	mutable_get_s2s->add_agg_group_client_ids(st_repo.get_switch_id() + 8192);
 
 	send_protobuf_message_simple_stream(parent.wfd.get_fd(), other_switch_req);
 

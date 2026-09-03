@@ -80,6 +80,7 @@ header roce_h {
 
 header s2s_h {
     ib_qp_t dst_qp;
+    ib_psn_t psn;
 }
 
 header roce_checksum_h {

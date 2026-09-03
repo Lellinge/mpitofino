@@ -50,6 +50,7 @@ struct my_egress_headers_t {
 	ipv4_h ipv4;
 	udp_h udp;
 	roce_h roce;
+	s2s_h s2s;
 	roce_ack_h roce_ack;
 }
 

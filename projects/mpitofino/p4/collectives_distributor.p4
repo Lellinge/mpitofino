@@ -109,11 +109,31 @@ control CollectivesDistributorParent(inout my_egress_headers_t hdr, inout my_egr
 
         hdr.udp.checksum = 0;
 
+        // add the s2s header
+        // Those are globally consistent, so we can reuse that.
+        hdr.s2s.dst_qp = hdr.roce.dst_qp;
+        hdr.s2s.psn = hdr.roce.psn;
+        hdr.s2s.setValid();
+
+
         // remove the roce stuff if were talking to another switch
         // roce is necessary for the rdma capabilites on nodes, but switches dont care
-        hdr.ipv4.total_length = hdr.ipv4.total_length - 12;
-        hdr.udp.length = hdr.udp.length - 12;
+        // TODO is 12 actually the correct size???
+        // I think its actually 18
+
+        // + 12 - 18 = - 6
+
+        /*hdr.ipv4.total_length = hdr.ipv4.total_length + 12;
+        hdr.udp.length = hdr.udp.length + 12;
+        hdr.ipv4.total_length = hdr.ipv4.total_length - 18;
+        hdr.udp.length = hdr.udp.length - 18;*/
+
+        hdr.ipv4.total_length = hdr.ipv4.total_length - 6;
+        hdr.udp.length = hdr.udp.length - 6;
+
+
         hdr.roce.setInvalid();
+
    }
 
     table parent_output_address {

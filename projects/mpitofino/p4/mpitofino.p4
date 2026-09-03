@@ -10,6 +10,7 @@
 
 
 #define SWITCHING_TABLE_SIZE	2048
+#define IS_ROOT 0
 
 const bit<3> ETH_SWITCH_LEARN_DIGEST = 0;
 
@@ -90,12 +91,12 @@ parser IngressParser(
 	}
 
 	state parse_s2s {
-	/* TODO implement */
 	pkt.extract(hdr.s2s);
 	pkt.extract(hdr.aggregate);
-	// TODO do we even need to parse this or can we just ignore it?
-	pkt.extract(hdr.roce_checksum);
-
+	// do we even need to parse this or can we just ignore it?
+	// a network switch ignores the stuff it doesnt parse, as its the payload. So no, we dont
+	//pkt.extract(hdr.roce_checksum);
+    transition accept;
 	}
 
 	state parse_roce {
@@ -148,6 +149,7 @@ control Ingress(
 {
 	/* Collectives module */
 	Collectives() collectives;
+	CollectivesBroadcaster() collectives_broadcaster;
 
 	CRCPolynomial<bit<32>>(0x04c11db7, true, true, false, 0xffffffff, 0xffffffff) icrc_poly;
 	Hash<bit<32>>(HashAlgorithm_t.CUSTOM, icrc_poly) icrc_hash1;
@@ -280,8 +282,16 @@ control Ingress(
 	apply {
 		ig_tm_md.bypass_egress = 0;
 
+#if IS_ROOT
+        if (hdr.aggregate.isValid())
+#else
+        // TODO dont hardcode the s2s port, but make it configurable using a table instead
+        if (ig_intr_md.ingress_port == 400) {
+            collectives_broadcaster.apply(hdr, meta, ig_intr_md, ig_dprsr_md, ig_tm_md);
+        }
 		/* Logics violation: This should really be in the else if-if-clause... */
-		if (hdr.aggregate.isValid())
+		else if (hdr.aggregate.isValid())
+#endif
 		{
 			collectives.apply(hdr, meta, ig_intr_md, ig_dprsr_md, ig_tm_md);
 		}

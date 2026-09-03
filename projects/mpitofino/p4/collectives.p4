@@ -224,9 +224,7 @@ control Collectives(
 	action check_complete_distribute(bit<16> mcast_grp) {
 		ig_dprsr_md.drop_ctl = 0;
 		ig_tm_md.mcast_grp_a = mcast_grp;
-        // if this is compiled, it will fail
-        // put there during debugging, remove the comment when you want to actually use the single switch stuff again
-	//}
+	}
 #else
 	action check_complete_parent(PortId_t port) {
 	    /* Based on check_complete_next_pipe */
@@ -285,9 +283,9 @@ control Collectives(
 	        bit<32> node_bitmap_low, bit<32> node_bitmap_high)
 	{
         // this is based on select_agg_unit
-        ig_dprsr_md.drop_ctrl = 1;
+        ig_dprsr_md.drop_ctl = 1;
         meta.agg_have_unit = true;
-        mega.agg_unit = agg_unit[7:0] ++ hdr.s2s.psn[7:0];
+        meta.agg_unit = agg_unit[7:0] ++ hdr.s2s.psn[7:0];
         meta.bridge_header.agg_unit = agg_unit;
         meta.node_bitmap.low = node_bitmap_low;
         meta.node_bitmap.high = node_bitmap_high;
@@ -335,7 +333,11 @@ control Collectives(
 	apply {
 		/* Select an aggregation unit based on channel, client, and (in the
 		 * future) sequence number */
-		unit_selector.apply();
+		 if (hdr.roce.isValid()) {
+		    unit_selector.apply();
+		 } else {
+		    unit_selector_s2s.apply();
+		 }
 
 		/* Track progress of aggregation at this aggregation-node (switch) * */
 		tbl_update_bitmap_low.apply();
@@ -378,4 +380,41 @@ control Collectives(
 		agg30.apply(hdr, meta, hdr.aggregate.val60, hdr.aggregate.val61);
 		agg31.apply(hdr, meta, hdr.aggregate.val62, hdr.aggregate.val63);
 	}
+}
+
+control CollectivesBroadcaster(inout my_ingress_headers_t hdr,
+                                inout my_ingress_metadata_t meta,
+                                in ingress_intrinsic_metadata_t ig_intr_md,
+                                inout ingress_intrinsic_metadata_for_deparser_t ig_dprsr_md,
+                                inout ingress_intrinsic_metadata_for_tm_t ig_tm_md)
+                                {
+    action fixup_s2s_response(bit<24> agg_unit, bit<16> mcast_grp) {
+        meta.bridge_header.agg_unit = agg_unit[7:0] ++ hdr.roce.psn[7:0];
+        ig_tm_md.mcast_grp_a = mcast_grp;
+        ig_dprsr_md.drop_ctl = 0;
+
+        // TODO do I need to update stuff in terms  of roce?
+    }
+   table broadcast_lookup {
+    key = {
+        hdr.ipv4.src_addr : ternary;
+        hdr.ipv4.dst_addr : exact;
+        hdr.roce.dst_qp : ternary;
+        // we dont need to key on ingress port since thats already done earlier in the if
+    }
+
+    actions = {
+        fixup_s2s_response;
+        NoAction;
+    }
+
+    default_action = NoAction;
+
+    size = 1024; // based on the unit selectors
+   }
+
+   apply {
+        broadcast_lookup.apply();
+   }
+
 }

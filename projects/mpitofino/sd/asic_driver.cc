@@ -79,6 +79,10 @@ void ASICDriver::find_tables()
 	RES_TBL("Ingress.collectives.unit_selector", collectives_unit_selector);
 	RES_TBL("Ingress.collectives.unit_selector_s2s", collectives_unit_selector_s2s);
 	RES_TBL("Ingress.collectives.check_complete", collectives_check_complete);
+#if IS_ROOT
+#else
+	RES_TBL("Ingress.collectives_broadcaster.broadcast_lookup", collectives_broadcaster_lookup);
+#endif
 	RES_TBL("Egress.collectives_distributor.output_address", collectives_output_address);
     //RES_TBL("Egress.collectives_distributor.parent_output_address", collectives_parent_output_address);
 	RES_TBL("Egress.collectives_distributor_parent.parent_output_address", collectives_dist_parent_output);
@@ -604,26 +608,71 @@ void ASICDriver::on_st_repo_channels()
 			/* Unit selector */
 			uint8_t ip_mask[4] = {0xff, 0xff, 0xff, 0xff};
 
-			check_bf_status(table_add_or_mod(
-				*collectives_unit_selector, *session, pipe_tgt,
-				*table_create_key<const uint8_t*, const uint8_t*, uint64_t, uint64_t>(
-					collectives_unit_selector,
-					table_field_desc_t<const uint8_t*>::create_ternary(
-						"hdr.ipv4.src_addr",
-						reinterpret_cast<const uint8_t*>(&part.ip), ip_mask,
-						sizeof(part.ip)),
-					{"hdr.ipv4.dst_addr",
-					 reinterpret_cast<const uint8_t*>(&rc->fabric_ip), sizeof(rc->fabric_ip)},
-					table_field_desc_t<uint64_t>::create_ternary(
-						"hdr.roce.dst_qp", part.fabric_qp, 0xffffff),
-					table_field_desc_t<uint64_t>::create_ternary("meta.ingress_port", 0, 0)),
-				*table_create_data_action<uint64_t, uint64_t, uint64_t>(
-					collectives_unit_selector, "Ingress.collectives.select_agg_unit",
-					{"agg_unit", rc->agg_unit},
-					{"node_bitmap_low", node_bitmap_low[pipe]},
-					{"node_bitmap_high", node_bitmap_high[pipe]})),
-			"Failed to update Collectives.unit_selector table");
-			check_bf_status(table_add_or_mod(*collectives_unit_selector_s2s, *session, pipe_tgt,
+			if (part.is_s2s) {
+				check_bf_status(table_add_or_mod(*collectives_unit_selector_s2s, *session, pipe_parent,
+					*table_create_key<const uint8_t*, const uint8_t*, uint64_t, uint64_t>(
+						collectives_unit_selector_s2s,
+						table_field_desc_t<const uint8_t*>::create_ternary(
+							"hdr.ipv4.src_addr",
+							reinterpret_cast<const uint8_t*>(&part.ip), ip_mask,
+							sizeof(part.ip)),
+							{"hdr.ipv4.dst_addr",
+							reinterpret_cast<const uint8_t*>(&rc->fabric_ip), sizeof(rc->fabric_ip)},
+							table_field_desc_t<uint64_t>::create_ternary("hdr.s2s.dst_qp",
+								part.fabric_qp, 0xffffff),
+							table_field_desc_t<uint64_t>::create_ternary("meta.ingress_port", 0, 0)),
+							*table_create_data_action<uint64_t, uint64_t, uint64_t>(
+								collectives_unit_selector_s2s, "Ingress.collectives.select_agg_unit_s2s",
+								{"agg_unit", rc->agg_unit},
+								{"node_bitmap_low", node_bitmap_low[pipe]},
+								{"node_bitmap_high", node_bitmap_high[pipe]}
+							)
+						), "Failed to update Collectives.unit_selector_s2s table");
+				// add the response rebroadcasting stuff
+				uint16_t mcast_grp = 0x10 + rc->agg_unit;
+#if IS_ROOT
+#else
+				// TODO what pipe to use for this? Or the all pipe thingy
+				check_bf_status(table_add_or_mod(*collectives_broadcaster_lookup, *session, pipe_parent,
+					*table_create_key<const uint8_t*, const uint8_t*, uint64_t>(collectives_broadcaster_lookup,
+						table_field_desc_t<const uint8_t*>::create_ternary(
+							"hdr.ipv4.src_addr",
+							reinterpret_cast<const uint8_t*>(st_repo.get_switch_to_switch_dst_ipv4_ptr()), ip_mask,
+							sizeof(st_repo.get_switch_to_switch_dst_ipv4())),
+						{"hdr.ipv4.dst_addr",
+						 reinterpret_cast<const uint8_t*>(st_repo.get_switch_to_switch_src_ipv4_ptr()),
+						 sizeof(st_repo.get_switch_to_switch_src_ipv4())},
+						table_field_desc_t<uint64_t>::create_ternary("hdr.roce.dst_qp", part.fabric_qp, 0xffffff)
+						),
+					*table_create_data_action<uint64_t, uint64_t>(
+						collectives_broadcaster_lookup, "Ingress.collectives_broadcaster.fixup_s2s_response",
+						{"agg_unit", rc->agg_unit},
+						{"mcast_grp", mcast_grp}))
+					, "Failed to update collectives_broadcaster.broadcast_lookup ");
+#endif
+			} else {
+				check_bf_status(table_add_or_mod(
+					*collectives_unit_selector, *session, pipe_tgt,
+					*table_create_key<const uint8_t*, const uint8_t*, uint64_t, uint64_t>(
+						collectives_unit_selector,
+						table_field_desc_t<const uint8_t*>::create_ternary(
+							"hdr.ipv4.src_addr",
+							reinterpret_cast<const uint8_t*>(&part.ip), ip_mask,
+							sizeof(part.ip)),
+						{"hdr.ipv4.dst_addr",
+						 reinterpret_cast<const uint8_t*>(&rc->fabric_ip), sizeof(rc->fabric_ip)},
+						table_field_desc_t<uint64_t>::create_ternary(
+							"hdr.roce.dst_qp", part.fabric_qp, 0xffffff),
+						table_field_desc_t<uint64_t>::create_ternary("meta.ingress_port", 0, 0)),
+					*table_create_data_action<uint64_t, uint64_t, uint64_t>(
+						collectives_unit_selector, "Ingress.collectives.select_agg_unit",
+						{"agg_unit", rc->agg_unit},
+						{"node_bitmap_low", node_bitmap_low[pipe]},
+						{"node_bitmap_high", node_bitmap_high[pipe]})),
+				"Failed to update Collectives.unit_selector table");
+			}
+
+			/*check_bf_status(table_add_or_mod(*collectives_unit_selector_s2s, *session, pipe_tgt,
 				*table_create_key<const uint8_t*, const uint8_t*, uint64_t, uint64_t>(
 					collectives_unit_selector_s2s,
 					table_field_desc_t<const uint8_t*>::create_ternary(
@@ -638,7 +687,7 @@ void ASICDriver::on_st_repo_channels()
 							{"node_bitmap_low", node_bitmap_low[pipe]},
 							{"node_bitmap_high", node_bitmap_high[pipe]}
 						)
-					)), "Failed to update Collectives.unit_selector_s2s table");
+					)), "Failed to update Collectives.unit_selector_s2s table");*/
 
 
 			/* Output address update */

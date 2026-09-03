@@ -59,7 +59,10 @@ PacketProcessor::PacketProcessor(StateRepository& st_repo, Epoll& epoll)
 						 placeholders::_1, placeholders::_2));
 
 		/* Start timer */
-		discovery_protocol_timer.start(10 * 1000 * 1000);
+		// FIXME this is a giant hack, fix at some point after submission
+		if (st_repo.get_control_ip_addr() == IPv4Addr("172.18.0.11")) {
+			discovery_protocol_timer.start(10 * 1000 * 1000);
+		}
 	}
 	catch (...)
 	{
